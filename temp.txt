@@ -1,0 +1,18 @@
+C:\tmp\Flink>docker ps                                 
+CONTAINER ID   IMAGE                     COMMAND                  CREATED              STATUS              PORTS           
+                   NAMES
+1130590e3199   flink:1.20.1-scala_2.12   "/docker-entrypoint.…"   About a minute ago   Up About a minute   6123/tcp, 8081/tcp                 flink-taskmanager-2
+6f6157a5413d   flink:1.20.1-scala_2.12   "/docker-entrypoint.…"   About a minute ago   Up About a minute   6123/tcp, 8081/tcp                 flink-taskmanager-1
+6e0b860cacbf   flink:1.20.1-scala_2.12   "/docker-entrypoint.…"   About a minute ago   Up About a minute   6123/tcp, 0.0.0.0:8081->8081/tcp   flink-jobmanager-1
+
+C:\tmp\Flink>docker exec 11 flink --version            
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+Version: 1.20.1, Commit ID: cb1e7b5
+
+C:\tmp\Flink>
+
+Flink Version: 1.20.1
