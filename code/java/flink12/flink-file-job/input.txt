@@ -1,5 +1,0 @@
-hello
-flink
-simple
-file
-processing

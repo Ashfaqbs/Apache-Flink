@@ -1,2 +1,0 @@
-when working with file make sure to have the copy in all the cluster else file not found exception will come 
-
