@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+
+  jobmanager:
+    image: flink:1.19.0-scala_2.12
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    volumes:
+      - ./flink-plugins/postgres-cdc:/opt/flink/plugins/postgres-cdc
+
+
+  taskmanager:
+    image: flink:1.19.0-scala_2.12
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    volumes:
+      - ./flink-plugins/postgres-cdc:/opt/flink/plugins/postgres-cdc
+
+  postgres:
+    image: debezium/postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: streamdb
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
