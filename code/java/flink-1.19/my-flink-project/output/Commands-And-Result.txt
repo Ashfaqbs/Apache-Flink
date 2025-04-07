@@ -1,0 +1,162 @@
+- Jars used :
+
+C:\tmp\Apache-Flink\code\java\flink-1.19\my-flink-project\jars>wsl ls -lrt
+total 479280
+-rwxrwxrwx    1 root     0         81787458 Apr  3 07:27 flink-kdb.jar
+-rwxrwxrwx    1 root     0         81788670 Apr  3 07:50 flink-kdb-win.jar
+-rwxrwxrwx    1 root     0         81791730 Apr  3 10:59 flink-kdb-win-state-customdeserializer.jar
+-rwxrwxrwx    1 root     0         81794016 Apr  3 12:39 simple-ktk.jar
+-rwxrwxrwx    1 root     0         81799972 Apr  3 17:54 Myeventktk.jar
+-rwxrwxrwx    1 root     0         81803217 Apr  3 18:41 flietk.jar
+-rwxrwxrwx    1 root     0             8052 Apr  3 18:59 commands.txt
+
+C:\tmp\Apache-Flink\code\java\flink-1.19\my-flink-project\jars>
+
+
+
+- Commands used for the example jars 
+
+ docker cp C:/tmp/flink1.19/my-flink-project/jars/flink-kdb-win.jar  docker-jobmanager-1:/tmp/
+ docker exec -it docker-jobmanager-1 /opt/flink/bin/flink run -c com.example.FlinkKafkaToDB  /tmp/flink-kdb-win.jar
+
+ docker exec -it docker-postgres-1 psql -U postgres -d mainschema
+
+flink-kdb.jar
+flink-kdb-win.jar
+
+
+flink-kdb-win-state.jar
+
+
+SimpleKafkaToKafkaJob
+
+PS C:\tmp\flink1.19\my-flink-project\jars> docker cp C:/tmp/flink1.19/my-flink-project/jars/simple-ktk.jar   docker-jobmanager-1:/tmp/
+Successfully copied 81.8MB to docker-jobmanager-1:/tmp/
+PS C:\tmp\flink1.19\my-flink-project\jars> docker exec -it docker-jobmanager-1 /opt/flink/bin/flink run -c com.example.SimpleKafkaToKafkaJob  /tmp/simple-ktk.jar
+
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+Job has been submitted with JobID cee52a81169fbdfb434078e0b8b6ecc5
+
+
+
+Producer
+
+C:\Users\ashfa>docker exec -it docker-kafka-1 bash
+root@a8fa534f7c33:/# kafka-console-producer.sh --topic input-topic --bootstrap-server localhost:9092
+>Hello
+>One
+>Two
+>the
+>lNsd
+>lnnzd
+>nzn
+>lkn
+>xzkjcn
+>asdn
+>
+
+Consumer
+
+
+C:\Users\ashfa>docker exec -it docker-kafka-1 bash
+root@a8fa534f7c33:/# kafka-topics.sh --list --bootstrap-server localhost:9092
+__consumer_offsets
+input-topic
+my-topic
+output-topic
+root@a8fa534f7c33:/# kafka-console-consumer.sh --topic output-topic --bootstrap-server localhost:9092 --from-beginning
+KAFKA-CONSOLE-PRODUCER.SH --TOPIC INPUT-TOPIC --BOOTSTRAP-SERVER LOCALHOST:9092
+SJ
+SJS
+SKS
+S
+S
+S
+S
+HELLO
+ONE
+TWO
+THE
+LNSD
+LNNZD
+NZN
+LKN
+XZKJCN
+ASDN
+
+
+
+Kafka To Kafka Job Custom class
+
+PS C:\tmp\flink1.19\my-flink-project\jars>  docker cp C:/tmp/flink1.19/my-flink-project/jars/Myeventktk.jar   docker-jobmanager-1:/tmp/
+Successfully copied 81.8MB to docker-jobmanager-1:/tmp/
+PS C:\tmp\flink1.19\my-flink-project\jars> docker exec -it docker-jobmanager-1 /opt/flink/bin/flink run -c com.example.KafkaToKafkaJob  /tmp/Myeventktk.jar
+
+
+C:\Users\ashfa>docker exec -it docker-kafka-1 bash
+root@00cf741da0fb:/# kafka-topics.sh --create --topic input-topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+Created topic input-topic.
+root@00cf741da0fb:/# kafka-topics.sh --create --topic output-topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+Created topic output-topic.
+root@00cf741da0fb:/#  kafka-topics.sh --list --bootstrap-server localhost:9092
+input-topic
+my-topic
+output-topic
+
+Producer :
+PS C:\tmp\flink1.19\my-flink-project> python .\ktk.py
+C:\tmp\flink1.19\my-flink-project\ktk.py:19: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat()
+Sent: {'id': 2100, 'name': 'Carrie Price', 'timestamp': '2025-04-03T08:16:25.400916'}
+Sent: {'id': 2101, 'name': 'Douglas Mitchell', 'timestamp': '2025-04-03T08:16:26.409102'}
+Sent: {'id': 2102, 'name': 'Dale Mullen', 'timestamp': '2025-04-03T08:16:27.410458'}
+Sent: {'id': 2103, 'name': 'William Thomas', 'timestamp': '2025-04-03T08:16:28.411704'}
+Sent: {'id': 2104, 'name': 'Wesley Fox', 'timestamp': '2025-04-03T08:16:29.413257'}
+Sent: {'id': 2105, 'name': 'Debra Bird', 'timestamp': '2025-04-03T08:16:30.414514'}
+Sent: {'id': 2106, 'name': 'Cynthia Gomez', 'timestamp': '2025-04-03T08:16:31.415677'}
+Sent: {'id': 2107, 'name': 'Michael Hines', 'timestamp': '2025-04-03T08:16:32.416609'}
+Sent: {'id': 2108, 'name': 'Adam Lloyd', 'timestamp': '2025-04-03T08:16:33.417794'}
+
+
+
+Consumer :
+root@00cf741da0fb:/# kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic output-topic --from-beginning
+{"id":2100,"name":"JACOB NEWMAN","timestamp":"2025-04-03T12:25:41.456Z"}
+{"id":2101,"name":"CHRISTINE MYERS","timestamp":"2025-04-03T12:25:42.464Z"}
+{"id":2102,"name":"WILLIAM LOPEZ","timestamp":"2025-04-03T12:25:43.467Z"}
+{"id":2103,"name":"ALEXIS WATSON","timestamp":"2025-04-03T12:25:44.470Z"}
+{"id":2104,"name":"MR. MICHAEL GARCIA","timestamp":"2025-04-03T12:25:45.473Z"}
+{"id":2105,"name":"JOAN SOLOMON","timestamp":"2025-04-03T12:25:46.475Z"}
+{"id":2106,"name":"MELISSA DIXON","timestamp":"2025-04-03T12:25:47.479Z"}
+{"id":2107,"name":"JAMIE PAYNE","timestamp":"2025-04-03T12:25:48.482Z"}
+{"id":2108,"name":"SHANE PORTER","timestamp":"2025-04-03T12:25:49.484Z"}
+{"id":2109,"name":"ADRIAN RICHARDS","timestamp":"2025-04-03T12:25:50.487Z"}
+{"id":2110,"name":"JODI GONZALEZ","timestamp":"2025-04-03T12:25:51.492Z"}
+{"id":2111,"name":"ALEXANDRIA SMITH","timestamp":"2025-04-03T12:25:52.494Z"}
+{"id":2112,"name":"NICHOLAS HICKS JR.","timestamp":"2025-04-03T12:25:53.497Z"}
+
+
+File to Kafka Job
+
+C:\Users\ashfa>docker exec -it docker-kafka-1 kafka-console-consumer.sh   --bootstrap-server kafka:9092  --topic my-topic  --from-beginning
+The Chronicles of Eloria: The Lost Pendant
+Chapter 1: The Mysterious Map
+Eliot had always been an ordinary boy in the small village of Greystone, nestled between ancient forests and misty hills. But everything changed the day he stumbled upon an old, dusty map tucked inside a forgotten book at the village library. The map, faded and brittle, marked the location of the legendary Lost Pendant of Eloria—a relic said to hold the power to control time itself.
+Eliot’s heart raced with excitement and fear. He packed his satchel with essentials: a lantern, some bread, his trusty compass, and the map. As the sun dipped below the horizon, casting long shadows over Greystone, he set out, guided by nothing but the flickering light of his lantern and the whispers of adventure calling from the dark.
+Chapter 2: The Forest of Echoes
+The Forest of Echoes was unlike any place Eliot had ever seen. The trees were tall and ancient, their twisted roots forming natural arches and hidden pathways. Strange whispers floated through the air, as if the forest itself was alive, echoing the thoughts of those who dared to enter.
+Eliot pressed on, his courage bolstered by the promise of discovery. Suddenly, a shadow moved across his path. A figure emerged—an old traveler with eyes as sharp as a hawk’s and a cloak stitched with symbols of forgotten lore.
+“Lost, are we?” the traveler rasped, his voice a blend of curiosity and warning.
+“I’m looking for the Lost Pendant of Eloria,” Eliot replied, gripping the map tightly.
+The traveler’s expression softened. “Many seek it, but few understand its true power. Beware, young one, for the pendant’s magic is both a gift and a curse.”
+Chapter 3: The Trial of Courage
+After days of journeying, Eliot reached the ruins of an ancient temple hidden deep within a valley shrouded in mist. The temple’s doors were adorned with intricate carvings that seemed to move when viewed from different angles. Inside, the air was thick with dust and the scent of old stone.
+At the heart of the temple stood a pedestal, cradling the Lost Pendant. But guarding it was a creature of shadow and flame—a guardian bound by ancient spells to protect the relic. Eliot knew he had to face his fears, not just of the creature but of his own doubts.
+With unwavering determination, he confronted the guardian, using his wits and the knowledge he’d gained from his journey. After a fierce battle, Eliot stood victorious, the pendant now resting in his hands.
+Epilogue
+Eliot returned to Greystone, not just as a boy but as a legend. The pendant’s power was immense, but he chose to keep it hidden, understanding that some treasures were meant to be protected, not possessed.
+His adventure had changed him forever, and though the pendant’s story was complete, his own was just beginning.
