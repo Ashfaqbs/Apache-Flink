@@ -4,12 +4,6 @@ we will use java 17.
 
 
 
-
-
-
-
-
-
 pointed java version is 11 for flink 1.2
 
 C:\tmp\Flink>set JAVA_HOME=C:\openjdk\jdk-11.0.26+4
