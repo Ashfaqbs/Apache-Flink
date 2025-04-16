@@ -1,0 +1,548 @@
+Microsoft Windows [Version 10.0.26100.3775]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\ashfa>docker ps
+CONTAINER ID   IMAGE                           COMMAND                  CREATED         STATUS         PORTS                                                NAMES
+3ab79b9dd997   flink:1.19.0-scala_2.12         "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes   6123/tcp, 8081/tcp                                   docker-taskmanager-2
+21276cc0a101   flink:1.19.0-scala_2.12         "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes   6123/tcp, 8081/tcp                                   docker-taskmanager-1
+2f2ad9cd84c4   flink:1.19.0-scala_2.12         "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes   6123/tcp, 0.0.0.0:8081->8081/tcp                     docker-jobmanager-1
+7eb1555efcc4   wurstmeister/zookeeper:latest   "/bin/sh -c '/usr/sb…"   2 minutes ago   Up 2 minutes   22/tcp, 2888/tcp, 3888/tcp, 0.0.0.0:2181->2181/tcp   docker-zookeeper-1
+b62a68c7ab09   postgres:latest                 "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   0.0.0.0:5432->5432/tcp                               docker-postgres-1
+b86eef8b9340   wurstmeister/kafka:latest       "start-kafka.sh"         2 minutes ago   Up 2 minutes   0.0.0.0:9092->9092/tcp, 9093/tcp                     docker-kafka-1
+
+C:\Users\ashfa>docker logs -f 3ab79b9dd997
+sed: can't read /config.yaml: No such file or directory
+Starting Task Manager
+Starting taskexecutor as a console application on host 3ab79b9dd997.
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+2025-04-11 03:15:00,940 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - --------------------------------------------------------------------------------
+2025-04-11 03:15:00,944 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Preconfiguration:
+2025-04-11 03:15:00,944 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -
+
+
+RESOURCE_PARAMS extraction logs:
+jvm_params: -Xmx536870902 -Xms536870902 -XX:MaxDirectMemorySize=268435458 -XX:MaxMetaspaceSize=268435456
+dynamic_configs: -D taskmanager.memory.network.min=134217730b -D taskmanager.cpu.cores=1.0 -D taskmanager.memory.task.off-heap.size=0b -D taskmanager.memory.jvm-metaspace.size=268435456b -D external-resources=none -D taskmanager.memory.jvm-overhead.min=201326592b -D taskmanager.memory.framework.off-heap.size=134217728b -D taskmanager.memory.network.max=134217730b -D taskmanager.memory.framework.heap.size=134217728b -D taskmanager.memory.managed.size=536870920b -D taskmanager.memory.task.heap.size=402653174b -D taskmanager.numberOfTaskSlots=1 -D taskmanager.memory.jvm-overhead.max=201326592b
+logs: WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+INFO  [] - Using standard YAML parser to load flink configuration file from /opt/flink/conf/config.yaml.
+INFO  [] - Loading configuration property: blob.server.port, 6124
+INFO  [] - Loading configuration property: taskmanager.memory.process.size, 1728m
+INFO  [] - Loading configuration property: taskmanager.bind-host, 0.0.0.0
+INFO  [] - Loading configuration property: jobmanager.execution.failover-strategy, region
+INFO  [] - Loading configuration property: jobmanager.rpc.address, jobmanager
+INFO  [] - Loading configuration property: jobmanager.memory.process.size, 1600m
+INFO  [] - Loading configuration property: jobmanager.rpc.port, 6123
+INFO  [] - Loading configuration property: query.server.port, 6125
+INFO  [] - Loading configuration property: rest.bind-address, 0.0.0.0
+INFO  [] - Loading configuration property: jobmanager.bind-host, 0.0.0.0
+INFO  [] - Loading configuration property: parallelism.default, 1
+INFO  [] - Loading configuration property: taskmanager.numberOfTaskSlots, 1
+INFO  [] - Loading configuration property: rest.address, 0.0.0.0
+INFO  [] - Loading configuration property: env.java.opts.all, --add-exports=java.base/sun.net.util=ALL-UNNAMED --add-exports=java.rmi/sun.rmi.registry=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-exports=java.security.jgss/sun.security.krb5=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.locks=ALL-UNNAMED
+INFO  [] - The derived from fraction jvm overhead memory (172.800mb (181193935 bytes)) is less than its min value 192.000mb (201326592 bytes), min value will be used instead
+INFO  [] - Final TaskExecutor Memory configuration:
+INFO  [] -   Total Process Memory:          1.688gb (1811939328 bytes)
+INFO  [] -     Total Flink Memory:          1.250gb (1342177280 bytes)
+INFO  [] -       Total JVM Heap Memory:     512.000mb (536870902 bytes)
+INFO  [] -         Framework:               128.000mb (134217728 bytes)
+INFO  [] -         Task:                    384.000mb (402653174 bytes)
+INFO  [] -       Total Off-heap Memory:     768.000mb (805306378 bytes)
+INFO  [] -         Managed:                 512.000mb (536870920 bytes)
+INFO  [] -         Total JVM Direct Memory: 256.000mb (268435458 bytes)
+INFO  [] -           Framework:             128.000mb (134217728 bytes)
+INFO  [] -           Task:                  0 bytes
+INFO  [] -           Network:               128.000mb (134217730 bytes)
+INFO  [] -     JVM Metaspace:               256.000mb (268435456 bytes)
+INFO  [] -     JVM Overhead:                192.000mb (201326592 bytes)
+
+2025-04-11 03:15:00,946 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - --------------------------------------------------------------------------------
+2025-04-11 03:15:00,947 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Starting TaskManager (Version: 1.19.0, Scala: 2.12, Rev:eaffd22, Date:2024-03-06T15:18:44+01:00)
+2025-04-11 03:15:00,947 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  OS current user: flink
+2025-04-11 03:15:00,948 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Current Hadoop/Kerberos user: <no hadoop dependency found>
+2025-04-11 03:15:00,949 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  JVM: OpenJDK 64-Bit Server VM - Eclipse Adoptium - 11/11.0.23+9
+2025-04-11 03:15:00,949 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Arch: amd64
+2025-04-11 03:15:00,949 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Maximum heap size: 512 MiBytes
+2025-04-11 03:15:00,950 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  JAVA_HOME: /opt/java/openjdk
+2025-04-11 03:15:00,951 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  No Hadoop Dependency available
+2025-04-11 03:15:00,951 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  JVM Options:
+2025-04-11 03:15:00,951 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -Xmx536870902
+2025-04-11 03:15:00,952 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -Xms536870902
+2025-04-11 03:15:00,952 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -XX:MaxDirectMemorySize=268435458
+2025-04-11 03:15:00,952 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -XX:MaxMetaspaceSize=268435456
+2025-04-11 03:15:00,952 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -XX:+IgnoreUnrecognizedVMOptions
+2025-04-11 03:15:00,953 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-exports=java.base/sun.net.util=ALL-UNNAMED
+2025-04-11 03:15:00,953 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-exports=java.rmi/sun.rmi.registry=ALL-UNNAMED
+2025-04-11 03:15:00,953 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
+2025-04-11 03:15:00,953 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED
+2025-04-11 03:15:00,953 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED
+2025-04-11 03:15:00,953 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED
+2025-04-11 03:15:00,954 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED
+2025-04-11 03:15:00,954 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-exports=java.security.jgss/sun.security.krb5=ALL-UNNAMED
+2025-04-11 03:15:00,954 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-opens=java.base/java.lang=ALL-UNNAMED
+2025-04-11 03:15:00,954 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-opens=java.base/java.net=ALL-UNNAMED
+2025-04-11 03:15:00,955 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-opens=java.base/java.io=ALL-UNNAMED
+2025-04-11 03:15:00,955 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-opens=java.base/java.nio=ALL-UNNAMED
+2025-04-11 03:15:00,958 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-opens=java.base/sun.nio.ch=ALL-UNNAMED
+2025-04-11 03:15:00,959 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-opens=java.base/java.lang.reflect=ALL-UNNAMED
+2025-04-11 03:15:00,960 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-opens=java.base/java.text=ALL-UNNAMED
+2025-04-11 03:15:00,960 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-opens=java.base/java.time=ALL-UNNAMED
+2025-04-11 03:15:00,964 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-opens=java.base/java.util=ALL-UNNAMED
+2025-04-11 03:15:00,964 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+2025-04-11 03:15:00,964 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED
+2025-04-11 03:15:00,964 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --add-opens=java.base/java.util.concurrent.locks=ALL-UNNAMED
+2025-04-11 03:15:00,964 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -Dlog.file=/opt/flink/log/flink--taskexecutor-0-3ab79b9dd997.log
+2025-04-11 03:15:00,964 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -Dlog4j.configuration=file:/opt/flink/conf/log4j-console.properties
+2025-04-11 03:15:00,965 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -Dlog4j.configurationFile=file:/opt/flink/conf/log4j-console.properties
+2025-04-11 03:15:00,965 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -Dlogback.configurationFile=file:/opt/flink/conf/logback-console.xml
+2025-04-11 03:15:00,965 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Program Arguments:
+2025-04-11 03:15:00,968 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --configDir
+2025-04-11 03:15:00,969 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     /opt/flink/conf
+2025-04-11 03:15:00,969 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+2025-04-11 03:15:00,969 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.network.min=134217730b
+2025-04-11 03:15:00,970 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+2025-04-11 03:15:00,970 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.cpu.cores=1.0
+2025-04-11 03:15:00,970 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+2025-04-11 03:15:00,970 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.task.off-heap.size=0b
+2025-04-11 03:15:00,970 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+2025-04-11 03:15:00,971 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.jvm-metaspace.size=268435456b
+2025-04-11 03:15:00,971 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+2025-04-11 03:15:00,971 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     external-resources=none
+2025-04-11 03:15:00,971 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+2025-04-11 03:15:00,972 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.jvm-overhead.min=201326592b
+2025-04-11 03:15:00,972 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+2025-04-11 03:15:00,972 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.framework.off-heap.size=134217728b
+2025-04-11 03:15:00,972 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+2025-04-11 03:15:00,973 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.network.max=134217730b
+2025-04-11 03:15:00,973 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+2025-04-11 03:15:00,973 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.framework.heap.size=134217728b
+2025-04-11 03:15:00,974 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+2025-04-11 03:15:00,975 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.managed.size=536870920b
+2025-04-11 03:15:00,975 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+2025-04-11 03:15:00,975 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.task.heap.size=402653174b
+2025-04-11 03:15:00,976 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+2025-04-11 03:15:00,976 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.numberOfTaskSlots=1
+2025-04-11 03:15:00,976 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+2025-04-11 03:15:00,977 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.jvm-overhead.max=201326592b
+2025-04-11 03:15:00,977 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Classpath: /opt/flink/lib/flink-cep-1.19.0.jar:/opt/flink/lib/flink-connector-files-1.19.0.jar:/opt/flink/lib/flink-csv-1.19.0.jar:/opt/flink/lib/flink-json-1.19.0.jar:/opt/flink/lib/flink-scala_2.12-1.19.0.jar:/opt/flink/lib/flink-table-api-java-uber-1.19.0.jar:/opt/flink/lib/flink-table-planner-loader-1.19.0.jar:/opt/flink/lib/flink-table-runtime-1.19.0.jar:/opt/flink/lib/log4j-1.2-api-2.17.1.jar:/opt/flink/lib/log4j-api-2.17.1.jar:/opt/flink/lib/log4j-core-2.17.1.jar:/opt/flink/lib/log4j-slf4j-impl-2.17.1.jar:/opt/flink/lib/flink-dist-1.19.0.jar::::
+2025-04-11 03:15:00,977 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - --------------------------------------------------------------------------------
+2025-04-11 03:15:00,979 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - Registered UNIX signal handlers for [TERM, HUP, INT]
+2025-04-11 03:15:00,984 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - Maximum number of open file descriptors is 1048576.
+2025-04-11 03:15:00,997 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Using standard YAML parser to load flink configuration file from /opt/flink/conf/config.yaml.
+2025-04-11 03:15:01,078 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: blob.server.port, 6124
+2025-04-11 03:15:01,079 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: taskmanager.memory.process.size, 1728m
+2025-04-11 03:15:01,079 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: taskmanager.bind-host, 0.0.0.0
+2025-04-11 03:15:01,079 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.execution.failover-strategy, region
+2025-04-11 03:15:01,080 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.rpc.address, jobmanager
+2025-04-11 03:15:01,080 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.memory.process.size, 1600m
+2025-04-11 03:15:01,081 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.rpc.port, 6123
+2025-04-11 03:15:01,081 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: query.server.port, 6125
+2025-04-11 03:15:01,082 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: rest.bind-address, 0.0.0.0
+2025-04-11 03:15:01,082 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.bind-host, 0.0.0.0
+2025-04-11 03:15:01,082 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: parallelism.default, 1
+2025-04-11 03:15:01,083 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: taskmanager.numberOfTaskSlots, 1
+2025-04-11 03:15:01,083 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: rest.address, 0.0.0.0
+2025-04-11 03:15:01,083 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: env.java.opts.all, --add-exports=java.base/sun.net.util=ALL-UNNAMED --add-exports=java.rmi/sun.rmi.registry=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-exports=java.security.jgss/sun.security.krb5=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.locks=ALL-UNNAMED
+2025-04-11 03:15:01,084 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.network.min, 134217730b
+2025-04-11 03:15:01,084 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.jvm-metaspace.size, 268435456b
+2025-04-11 03:15:01,084 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.task.off-heap.size, 0b
+2025-04-11 03:15:01,085 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.cpu.cores, 1.0
+2025-04-11 03:15:01,086 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: external-resources, none
+2025-04-11 03:15:01,086 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.jvm-overhead.min, 201326592b
+2025-04-11 03:15:01,086 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.framework.off-heap.size, 134217728b
+2025-04-11 03:15:01,086 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.network.max, 134217730b
+2025-04-11 03:15:01,087 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.framework.heap.size, 134217728b
+2025-04-11 03:15:01,087 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.managed.size, 536870920b
+2025-04-11 03:15:01,087 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.task.heap.size, 402653174b
+2025-04-11 03:15:01,088 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.numberOfTaskSlots, 1
+2025-04-11 03:15:01,088 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.jvm-overhead.max, 201326592b
+2025-04-11 03:15:01,171 INFO  org.apache.flink.core.fs.FileSystem                          [] - Hadoop is not in the classpath/dependencies. The extended set of supported File Systems via Hadoop is not available.
+2025-04-11 03:15:01,208 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: external-resource-gpu
+2025-04-11 03:15:01,218 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-prometheus
+2025-04-11 03:15:01,218 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-datadog
+2025-04-11 03:15:01,219 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-graphite
+2025-04-11 03:15:01,219 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-jmx
+2025-04-11 03:15:01,219 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-influx
+2025-04-11 03:15:01,220 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-slf4j
+2025-04-11 03:15:01,220 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-statsd
+2025-04-11 03:15:01,262 INFO  org.apache.flink.runtime.state.changelog.StateChangelogStorageLoader [] - StateChangelogStorageLoader initialized with shortcut names {memory,filesystem}.
+2025-04-11 03:15:01,262 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: external-resource-gpu
+2025-04-11 03:15:01,262 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-prometheus
+2025-04-11 03:15:01,263 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-datadog
+2025-04-11 03:15:01,263 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-graphite
+2025-04-11 03:15:01,263 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-jmx
+2025-04-11 03:15:01,263 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-influx
+2025-04-11 03:15:01,264 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-slf4j
+2025-04-11 03:15:01,264 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-statsd
+2025-04-11 03:15:01,267 INFO  org.apache.flink.runtime.state.changelog.StateChangelogStorageLoader [] - StateChangelogStorageLoader initialized with shortcut names {memory,filesystem}.
+2025-04-11 03:15:01,295 INFO  org.apache.flink.runtime.security.modules.HadoopModuleFactory [] - Cannot create Hadoop Security Module because Hadoop cannot be found in the Classpath.
+2025-04-11 03:15:01,318 INFO  org.apache.flink.runtime.security.modules.JaasModule         [] - Jaas file will be created as /tmp/jaas-14442709842080560534.conf.
+2025-04-11 03:15:01,330 INFO  org.apache.flink.runtime.security.contexts.HadoopSecurityContextFactory [] - Cannot install HadoopSecurityContext because Hadoop cannot be found in the Classpath.
+2025-04-11 03:15:01,899 INFO  org.apache.flink.runtime.util.LeaderRetrievalUtils           [] - Trying to select the network interface and address to use by connecting to the leading JobManager.
+2025-04-11 03:15:01,900 INFO  org.apache.flink.runtime.util.LeaderRetrievalUtils           [] - TaskManager will try to connect for PT10S before falling back to heuristics
+2025-04-11 03:15:02,532 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Trying to connect to address jobmanager/172.19.0.5:6123
+2025-04-11 03:15:02,534 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [3ab79b9dd997/172.19.0.6] with timeout [200] due to: Connection refused (Connection refused)
+2025-04-11 03:15:02,535 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/172.19.0.6] with timeout [50] due to: Connection refused (Connection refused)
+2025-04-11 03:15:02,537 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/172.19.0.6] with timeout [50] due to: Connection refused (Connection refused)
+2025-04-11 03:15:02,537 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/0:0:0:0:0:0:0:1%lo] with timeout [50] due to: Network is unreachable (connect failed)
+2025-04-11 03:15:02,538 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/127.0.0.1] with timeout [50] due to: Invalid argument (connect failed)
+2025-04-11 03:15:02,539 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/172.19.0.6] with timeout [1000] due to: Connection refused (Connection refused)
+2025-04-11 03:15:02,539 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/0:0:0:0:0:0:0:1%lo] with timeout [1000] due to: Network is unreachable (connect failed)
+2025-04-11 03:15:02,540 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/127.0.0.1] with timeout [1000] due to: Invalid argument (connect failed)
+2025-04-11 03:15:02,640 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Trying to connect to address jobmanager/172.19.0.5:6123
+2025-04-11 03:15:02,641 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [3ab79b9dd997/172.19.0.6] with timeout [200] due to: Connection refused (Connection refused)
+2025-04-11 03:15:02,642 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/172.19.0.6] with timeout [50] due to: Connection refused (Connection refused)
+2025-04-11 03:15:02,643 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/172.19.0.6] with timeout [50] due to: Connection refused (Connection refused)
+2025-04-11 03:15:02,644 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/0:0:0:0:0:0:0:1%lo] with timeout [50] due to: Network is unreachable (connect failed)
+2025-04-11 03:15:02,645 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/127.0.0.1] with timeout [50] due to: Invalid argument (connect failed)
+2025-04-11 03:15:02,646 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/172.19.0.6] with timeout [1000] due to: Connection refused (Connection refused)
+2025-04-11 03:15:02,646 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/0:0:0:0:0:0:0:1%lo] with timeout [1000] due to: Network is unreachable (connect failed)
+2025-04-11 03:15:02,647 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/127.0.0.1] with timeout [1000] due to: Invalid argument (connect failed)
+2025-04-11 03:15:02,847 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Trying to connect to address jobmanager/172.19.0.5:6123
+2025-04-11 03:15:02,848 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [3ab79b9dd997/172.19.0.6] with timeout [200] due to: Connection refused (Connection refused)
+2025-04-11 03:15:02,849 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/172.19.0.6] with timeout [50] due to: Connection refused (Connection refused)
+2025-04-11 03:15:02,850 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/172.19.0.6] with timeout [50] due to: Connection refused (Connection refused)
+2025-04-11 03:15:02,851 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/0:0:0:0:0:0:0:1%lo] with timeout [50] due to: Network is unreachable (connect failed)
+2025-04-11 03:15:02,851 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/127.0.0.1] with timeout [50] due to: Invalid argument (connect failed)
+2025-04-11 03:15:02,852 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/172.19.0.6] with timeout [1000] due to: Connection refused (Connection refused)
+2025-04-11 03:15:02,853 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/0:0:0:0:0:0:0:1%lo] with timeout [1000] due to: Network is unreachable (connect failed)
+2025-04-11 03:15:02,854 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/127.0.0.1] with timeout [1000] due to: Invalid argument (connect failed)
+2025-04-11 03:15:03,255 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Trying to connect to address jobmanager/172.19.0.5:6123
+2025-04-11 03:15:03,256 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [3ab79b9dd997/172.19.0.6] with timeout [200] due to: Connection refused (Connection refused)
+2025-04-11 03:15:03,256 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/172.19.0.6] with timeout [50] due to: Connection refused (Connection refused)
+2025-04-11 03:15:03,257 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/172.19.0.6] with timeout [50] due to: Connection refused (Connection refused)
+2025-04-11 03:15:03,258 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/0:0:0:0:0:0:0:1%lo] with timeout [50] due to: Network is unreachable (connect failed)
+2025-04-11 03:15:03,259 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/127.0.0.1] with timeout [50] due to: Invalid argument (connect failed)
+2025-04-11 03:15:03,263 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/172.19.0.6] with timeout [1000] due to: Connection refused (Connection refused)
+2025-04-11 03:15:03,264 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/0:0:0:0:0:0:0:1%lo] with timeout [1000] due to: Network is unreachable (connect failed)
+2025-04-11 03:15:03,265 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager/172.19.0.5:6123] from local address [/127.0.0.1] with timeout [1000] due to: Invalid argument (connect failed)
+2025-04-11 03:15:04,066 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Trying to connect to address jobmanager/172.19.0.5:6123
+2025-04-11 03:15:04,067 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - TaskManager will use hostname/address '3ab79b9dd997' (172.19.0.6) for communication.
+2025-04-11 03:15:04,156 INFO  org.apache.flink.runtime.rpc.pekko.PekkoRpcServiceUtils      [] - Trying to start actor system, external address 172.19.0.6:0, bind address 0.0.0.0:0.
+2025-04-11 03:15:05,227 INFO  org.apache.pekko.event.slf4j.Slf4jLogger                     [] - Slf4jLogger started
+2025-04-11 03:15:05,283 INFO  org.apache.pekko.remote.RemoteActorRefProvider               [] - Pekko Cluster not in use - enabling unsafe features anyway because `pekko.remote.use-unsafe-remote-features-outside-cluster` has been enabled.
+2025-04-11 03:15:05,284 INFO  org.apache.pekko.remote.Remoting                             [] - Starting remoting
+2025-04-11 03:15:05,561 INFO  org.apache.pekko.remote.Remoting                             [] - Remoting started; listening on addresses :[pekko.tcp://flink@172.19.0.6:39113]
+2025-04-11 03:15:05,731 INFO  org.apache.flink.runtime.rpc.pekko.PekkoRpcServiceUtils      [] - Actor system started at pekko.tcp://flink@172.19.0.6:39113
+2025-04-11 03:15:05,756 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - Using working directory: WorkingDirectory(/tmp/tm_172.19.0.6:39113-ea4fbf)
+2025-04-11 03:15:05,768 INFO  org.apache.flink.runtime.metrics.MetricRegistryImpl          [] - No metrics reporter configured, no metrics will be exposed/reported.
+2025-04-11 03:15:05,769 INFO  org.apache.flink.runtime.metrics.MetricRegistryImpl          [] - No trace reporter configured, no metrics will be exposed/reported.
+2025-04-11 03:15:05,774 INFO  org.apache.flink.runtime.rpc.pekko.PekkoRpcServiceUtils      [] - Trying to start actor system, external address 172.19.0.6:0, bind address 0.0.0.0:0.
+2025-04-11 03:15:05,819 INFO  org.apache.pekko.event.slf4j.Slf4jLogger                     [] - Slf4jLogger started
+2025-04-11 03:15:05,823 INFO  org.apache.pekko.remote.RemoteActorRefProvider               [] - Pekko Cluster not in use - enabling unsafe features anyway because `pekko.remote.use-unsafe-remote-features-outside-cluster` has been enabled.
+2025-04-11 03:15:05,824 INFO  org.apache.pekko.remote.Remoting                             [] - Starting remoting
+2025-04-11 03:15:05,867 INFO  org.apache.pekko.remote.Remoting                             [] - Remoting started; listening on addresses :[pekko.tcp://flink-metrics@172.19.0.6:42401]
+2025-04-11 03:15:05,882 INFO  org.apache.flink.runtime.rpc.pekko.PekkoRpcServiceUtils      [] - Actor system started at pekko.tcp://flink-metrics@172.19.0.6:42401
+2025-04-11 03:15:05,904 INFO  org.apache.flink.runtime.rpc.pekko.PekkoRpcService           [] - Starting RPC endpoint for org.apache.flink.runtime.metrics.dump.MetricQueryService at pekko://flink-metrics/user/rpc/MetricQueryService_172.19.0.6:39113-ea4fbf .
+2025-04-11 03:15:05,927 INFO  org.apache.flink.runtime.blob.PermanentBlobCache             [] - Created BLOB cache storage directory /tmp/tm_172.19.0.6:39113-ea4fbf/blobStorage
+2025-04-11 03:15:05,936 INFO  org.apache.flink.runtime.blob.TransientBlobCache             [] - Created BLOB cache storage directory /tmp/tm_172.19.0.6:39113-ea4fbf/blobStorage
+2025-04-11 03:15:05,942 INFO  org.apache.flink.runtime.externalresource.ExternalResourceUtils [] - Enabled external resources: []
+2025-04-11 03:15:05,943 INFO  org.apache.flink.runtime.security.token.DelegationTokenReceiverRepository [] - Loading delegation token receivers
+2025-04-11 03:15:05,950 INFO  org.apache.flink.runtime.security.token.DelegationTokenReceiverRepository [] - Delegation token receiver hadoopfs loaded and initialized
+2025-04-11 03:15:05,951 INFO  org.apache.flink.runtime.security.token.DelegationTokenReceiverRepository [] - Delegation token receiver hbase loaded and initialized
+2025-04-11 03:15:05,952 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: external-resource-gpu
+2025-04-11 03:15:05,952 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-prometheus
+2025-04-11 03:15:05,952 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-datadog
+2025-04-11 03:15:05,952 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-graphite
+2025-04-11 03:15:05,952 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-jmx
+2025-04-11 03:15:05,952 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-influx
+2025-04-11 03:15:05,953 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-slf4j
+2025-04-11 03:15:05,953 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-statsd
+2025-04-11 03:15:05,953 INFO  org.apache.flink.runtime.security.token.DelegationTokenReceiverRepository [] - Delegation token receivers loaded successfully
+2025-04-11 03:15:05,953 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - Starting TaskManager with ResourceID: 172.19.0.6:39113-ea4fbf
+2025-04-11 03:15:05,987 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerServices    [] - Temporary file directory '/tmp': total 1006 GB, usable 925 GB (91.95% usable)
+2025-04-11 03:15:05,992 INFO  org.apache.flink.runtime.io.disk.iomanager.IOManager         [] - Created a new FileChannelManager for spilling of task related data to disk (joins, sorting, ...). Used directories:
+        /tmp/flink-io-2b991ec0-8507-475c-a62d-c8f5a6f00a92
+2025-04-11 03:15:06,002 INFO  org.apache.flink.runtime.io.network.netty.NettyConfig        [] - NettyConfig [server address: /0.0.0.0, server port range: 0, ssl enabled: false, memory segment size (bytes): 32768, transport type: AUTO, number of server threads: 1 (manual), number of client threads: 1 (manual), server connect backlog: 0 (use Netty's default), client connect timeout (sec): 120, send/receive buffer size (bytes): 0 (use Netty's default)]
+2025-04-11 03:15:06,095 INFO  org.apache.flink.runtime.io.network.NettyShuffleServiceFactory [] - Created a new FileChannelManager for storing result partitions of BLOCKING shuffles. Used directories:
+        /tmp/flink-netty-shuffle-a072b74d-4be1-4e04-8172-7d69328ff4c1
+2025-04-11 03:15:06,212 INFO  org.apache.flink.runtime.io.network.buffer.NetworkBufferPool [] - Allocated 128 MB for network buffer pool (number of memory segments: 4096, bytes per segment: 32768).
+2025-04-11 03:15:06,277 INFO  org.apache.flink.runtime.io.network.NettyShuffleEnvironment  [] - Starting the network environment and its components.
+2025-04-11 03:15:06,406 INFO  org.apache.flink.runtime.io.network.netty.NettyClient        [] - Transport type 'auto': using EPOLL.
+2025-04-11 03:15:06,411 INFO  org.apache.flink.runtime.io.network.netty.NettyClient        [] - Successful initialization (took 133 ms).
+2025-04-11 03:15:06,418 INFO  org.apache.flink.runtime.io.network.netty.NettyServer        [] - Transport type 'auto': using EPOLL.
+2025-04-11 03:15:06,469 INFO  org.apache.flink.runtime.io.network.netty.NettyServer        [] - Successful initialization (took 56 ms). Listening on SocketAddress /0:0:0:0:0:0:0:0%0:44889.
+2025-04-11 03:15:06,469 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerServices    [] - TaskManager data connection initialized successfully; listening internally on port: 44889
+2025-04-11 03:15:06,471 INFO  org.apache.flink.runtime.taskexecutor.KvStateService         [] - Starting the kvState service and its components.
+2025-04-11 03:15:06,536 INFO  org.apache.flink.runtime.rpc.pekko.PekkoRpcService           [] - Starting RPC endpoint for org.apache.flink.runtime.taskexecutor.TaskExecutor at pekko://flink/user/rpc/taskmanager_0 .
+2025-04-11 03:15:06,568 INFO  org.apache.flink.runtime.taskexecutor.DefaultJobLeaderService [] - Start job leader service.
+2025-04-11 03:15:06,572 INFO  org.apache.flink.runtime.filecache.FileCache                 [] - User file cache uses directory /tmp/flink-dist-cache-c8957baf-807a-4108-821a-a8f5acc1d3d1
+2025-04-11 03:15:06,576 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Connecting to ResourceManager pekko.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*(00000000000000000000000000000000).
+2025-04-11 03:15:06,965 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Resolved ResourceManager address, beginning registration
+2025-04-11 03:15:07,151 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Successful registration at resource manager pekko.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_* under registration id 38c4930e869a1aa4c2872e00f150e5b2.
+2025-04-11 03:16:47,681 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Receive slot request 7a88f9a01217aa1365c80aed796f29c5 for job 6bf014751bbead466262e706e09a58ea from resource manager with leader id 00000000000000000000000000000000.
+2025-04-11 03:16:47,685 INFO  org.apache.flink.runtime.taskexecutor.slot.TaskSlotTableImpl [] - Allocated slot for 7a88f9a01217aa1365c80aed796f29c5 with resources ResourceProfile{cpuCores=1, taskHeapMemory=384.000mb (402653174 bytes), taskOffHeapMemory=0 bytes, managedMemory=512.000mb (536870920 bytes), networkMemory=128.000mb (134217730 bytes)}.
+2025-04-11 03:16:47,693 INFO  org.apache.flink.runtime.taskexecutor.DefaultJobLeaderService [] - Add job 6bf014751bbead466262e706e09a58ea for job leader monitoring.
+2025-04-11 03:16:47,696 INFO  org.apache.flink.runtime.taskexecutor.DefaultJobLeaderService [] - Try to register at job manager pekko.tcp://flink@jobmanager:6123/user/rpc/jobmanager_2 with leader id 00000000-0000-0000-0000-000000000000.
+2025-04-11 03:16:47,759 INFO  org.apache.flink.runtime.taskexecutor.DefaultJobLeaderService [] - Resolved JobManager address, beginning registration
+2025-04-11 03:16:47,794 INFO  org.apache.flink.runtime.taskexecutor.DefaultJobLeaderService [] - Successful registration at job manager pekko.tcp://flink@jobmanager:6123/user/rpc/jobmanager_2 for job 6bf014751bbead466262e706e09a58ea.
+2025-04-11 03:16:47,795 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Establish JobManager connection for job 6bf014751bbead466262e706e09a58ea.
+2025-04-11 03:16:47,799 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Offer reserved slots to the leader of job 6bf014751bbead466262e706e09a58ea.
+2025-04-11 03:16:47,838 INFO  org.apache.flink.runtime.taskexecutor.slot.TaskSlotTableImpl [] - Activate slot 7a88f9a01217aa1365c80aed796f29c5.
+2025-04-11 03:16:47,877 INFO  org.apache.flink.runtime.state.TaskExecutorFileMergingManager [] - Registered new file merging snapshot manager for job 6bf014751bbead466262e706e09a58ea.
+2025-04-11 03:16:47,878 INFO  org.apache.flink.runtime.state.changelog.StateChangelogStorageLoader [] - Creating a changelog storage with name 'memory'.
+2025-04-11 03:16:47,890 INFO  org.apache.flink.runtime.state.TaskExecutorChannelStateExecutorFactoryManager [] - Creating the channel state executor factory for job id 6bf014751bbead466262e706e09a58ea
+2025-04-11 03:16:47,898 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Received task Source: VisaUser Kafka Source -> Filter Non-Tourists -> Uppercase Name Transformation -> Sink: PostgreSQL Sink (1/1)#0 (4e027793ab7379460daed0838b541851_cbc357ccb763df2852fee8c4fc7d55f2_0_0), deploy into slot with allocation id 7a88f9a01217aa1365c80aed796f29c5.
+2025-04-11 03:16:47,900 INFO  org.apache.flink.runtime.taskmanager.Task                    [] - Source: VisaUser Kafka Source -> Filter Non-Tourists -> Uppercase Name Transformation -> Sink: PostgreSQL Sink (1/1)#0 (4e027793ab7379460daed0838b541851_cbc357ccb763df2852fee8c4fc7d55f2_0_0) switched from CREATED to DEPLOYING.
+2025-04-11 03:16:47,906 INFO  org.apache.flink.runtime.taskexecutor.slot.TaskSlotTableImpl [] - Activate slot 7a88f9a01217aa1365c80aed796f29c5.
+2025-04-11 03:16:47,907 INFO  org.apache.flink.runtime.taskmanager.Task                    [] - Loading JAR files for task Source: VisaUser Kafka Source -> Filter Non-Tourists -> Uppercase Name Transformation -> Sink: PostgreSQL Sink (1/1)#0 (4e027793ab7379460daed0838b541851_cbc357ccb763df2852fee8c4fc7d55f2_0_0) [DEPLOYING].
+2025-04-11 03:16:47,914 INFO  org.apache.flink.runtime.blob.BlobClient                     [] - Downloading 6bf014751bbead466262e706e09a58ea/p-5d68d440cbffeb3e343f367b56e0c69728a5cf5a-8fe6eccaf68a77d5a8c03c64039761d0 from jobmanager/172.19.0.5:6124
+2025-04-11 03:16:48,247 INFO  org.apache.flink.streaming.runtime.tasks.StreamTask          [] - State backend is set to heap memory org.apache.flink.runtime.state.hashmap.HashMapStateBackend@ac0b1ab
+2025-04-11 03:16:48,248 INFO  org.apache.flink.runtime.state.StateBackendLoader            [] - State backend loader loads the state backend as HashMapStateBackend
+2025-04-11 03:16:48,249 INFO  org.apache.flink.streaming.runtime.tasks.StreamTask          [] - Checkpoint storage is set to 'jobmanager'
+2025-04-11 03:16:48,262 INFO  org.apache.flink.runtime.taskmanager.Task                    [] - Source: VisaUser Kafka Source -> Filter Non-Tourists -> Uppercase Name Transformation -> Sink: PostgreSQL Sink (1/1)#0 (4e027793ab7379460daed0838b541851_cbc357ccb763df2852fee8c4fc7d55f2_0_0) switched from DEPLOYING to INITIALIZING.
+2025-04-11 03:16:48,620 INFO  org.apache.flink.runtime.state.StateBackendLoader            [] - State backend is set to heap memory org.apache.flink.runtime.state.hashmap.HashMapStateBackend@313ddf9c
+2025-04-11 03:16:48,882 INFO  org.apache.flink.runtime.state.StateBackendLoader            [] - State backend is set to heap memory org.apache.flink.runtime.state.hashmap.HashMapStateBackend@1c03abf9
+2025-04-11 03:16:48,883 INFO  org.apache.flink.runtime.state.StateBackendLoader            [] - State backend is set to heap memory org.apache.flink.runtime.state.hashmap.HashMapStateBackend@676c416d
+2025-04-11 03:16:48,883 INFO  org.apache.flink.runtime.state.StateBackendLoader            [] - State backend is set to heap memory org.apache.flink.runtime.state.hashmap.HashMapStateBackend@6405acf2
+2025-04-11 03:16:48,900 INFO  org.apache.flink.runtime.taskmanager.Task                    [] - Source: VisaUser Kafka Source -> Filter Non-Tourists -> Uppercase Name Transformation -> Sink: PostgreSQL Sink (1/1)#0 (4e027793ab7379460daed0838b541851_cbc357ccb763df2852fee8c4fc7d55f2_0_0) switched from INITIALIZING to RUNNING.
+2025-04-11 03:16:48,921 INFO  org.apache.flink.connector.base.source.reader.SourceReaderBase [] - Adding split(s) to reader: [[Partition: input-topic-0, StartingOffset: -2, StoppingOffset: -9223372036854775808]]
+2025-04-11 03:16:48,966 INFO  org.apache.kafka.clients.consumer.ConsumerConfig             [] - ConsumerConfig values:
+        allow.auto.create.topics = true
+        auto.commit.interval.ms = 5000
+        auto.include.jmx.reporter = true
+        auto.offset.reset = earliest
+        bootstrap.servers = [kafka:9093]
+        check.crcs = true
+        client.dns.lookup = use_all_dns_ips
+        client.id = flink-group-0
+        client.rack =
+        connections.max.idle.ms = 540000
+        default.api.timeout.ms = 60000
+        enable.auto.commit = false
+        exclude.internal.topics = true
+        fetch.max.bytes = 52428800
+        fetch.max.wait.ms = 500
+        fetch.min.bytes = 1
+        group.id = flink-group
+        group.instance.id = null
+        heartbeat.interval.ms = 3000
+        interceptor.classes = []
+        internal.leave.group.on.close = true
+        internal.throw.on.fetch.stable.offset.unsupported = false
+        isolation.level = read_uncommitted
+        key.deserializer = class org.apache.kafka.common.serialization.ByteArrayDeserializer
+        max.partition.fetch.bytes = 1048576
+        max.poll.interval.ms = 300000
+        max.poll.records = 500
+        metadata.max.age.ms = 300000
+        metric.reporters = []
+        metrics.num.samples = 2
+        metrics.recording.level = INFO
+        metrics.sample.window.ms = 30000
+        partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+        receive.buffer.bytes = 65536
+        reconnect.backoff.max.ms = 1000
+        reconnect.backoff.ms = 50
+        request.timeout.ms = 30000
+        retry.backoff.ms = 100
+        sasl.client.callback.handler.class = null
+        sasl.jaas.config = null
+        sasl.kerberos.kinit.cmd = /usr/bin/kinit
+        sasl.kerberos.min.time.before.relogin = 60000
+        sasl.kerberos.service.name = null
+        sasl.kerberos.ticket.renew.jitter = 0.05
+        sasl.kerberos.ticket.renew.window.factor = 0.8
+        sasl.login.callback.handler.class = null
+        sasl.login.class = null
+        sasl.login.connect.timeout.ms = null
+        sasl.login.read.timeout.ms = null
+        sasl.login.refresh.buffer.seconds = 300
+        sasl.login.refresh.min.period.seconds = 60
+        sasl.login.refresh.window.factor = 0.8
+        sasl.login.refresh.window.jitter = 0.05
+        sasl.login.retry.backoff.max.ms = 10000
+        sasl.login.retry.backoff.ms = 100
+        sasl.mechanism = GSSAPI
+        sasl.oauthbearer.clock.skew.seconds = 30
+        sasl.oauthbearer.expected.audience = null
+        sasl.oauthbearer.expected.issuer = null
+        sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+        sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+        sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+        sasl.oauthbearer.jwks.endpoint.url = null
+        sasl.oauthbearer.scope.claim.name = scope
+        sasl.oauthbearer.sub.claim.name = sub
+        sasl.oauthbearer.token.endpoint.url = null
+        security.protocol = PLAINTEXT
+        security.providers = null
+        send.buffer.bytes = 131072
+        session.timeout.ms = 45000
+        socket.connection.setup.timeout.max.ms = 30000
+        socket.connection.setup.timeout.ms = 10000
+        ssl.cipher.suites = null
+        ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+        ssl.endpoint.identification.algorithm = https
+        ssl.engine.factory.class = null
+        ssl.key.password = null
+        ssl.keymanager.algorithm = SunX509
+        ssl.keystore.certificate.chain = null
+        ssl.keystore.key = null
+        ssl.keystore.location = null
+        ssl.keystore.password = null
+        ssl.keystore.type = JKS
+        ssl.protocol = TLSv1.3
+        ssl.provider = null
+        ssl.secure.random.implementation = null
+        ssl.trustmanager.algorithm = PKIX
+        ssl.truststore.certificates = null
+        ssl.truststore.location = null
+        ssl.truststore.password = null
+        ssl.truststore.type = JKS
+        value.deserializer = class org.apache.kafka.common.serialization.ByteArrayDeserializer
+
+2025-04-11 03:16:49,094 WARN  org.apache.kafka.clients.consumer.ConsumerConfig             [] - These configurations '[client.id.prefix, partition.discovery.interval.ms]' were supplied but are not used yet.
+2025-04-11 03:16:49,097 INFO  org.apache.kafka.common.utils.AppInfoParser                  [] - Kafka version: 3.4.0
+2025-04-11 03:16:49,097 INFO  org.apache.kafka.common.utils.AppInfoParser                  [] - Kafka commitId: 2e1947d240607d53
+2025-04-11 03:16:49,097 INFO  org.apache.kafka.common.utils.AppInfoParser                  [] - Kafka startTimeMs: 1744341409094
+2025-04-11 03:16:49,110 INFO  org.apache.flink.connector.base.source.reader.fetcher.SplitFetcher [] - Starting split fetcher 0
+2025-04-11 03:16:49,126 INFO  org.apache.kafka.clients.consumer.KafkaConsumer              [] - [Consumer clientId=flink-group-0, groupId=flink-group] Assigned to partition(s): input-topic-0
+2025-04-11 03:16:49,131 INFO  org.apache.kafka.clients.consumer.internals.SubscriptionState [] - [Consumer clientId=flink-group-0, groupId=flink-group] Seeking to earliest offset of partition input-topic-0
+2025-04-11 03:16:49,534 INFO  org.apache.kafka.clients.Metadata                            [] - [Consumer clientId=flink-group-0, groupId=flink-group] Resetting the last seen epoch of partition input-topic-0 to 0 since the associated topicId changed from null to W0TaYm44T0muYrtWXUlfWA
+2025-04-11 03:16:49,537 INFO  org.apache.kafka.clients.Metadata                            [] - [Consumer clientId=flink-group-0, groupId=flink-group] Cluster ID: C6GOg3RNTZ-zrld-F5y-XQ
+2025-04-11 03:16:49,570 INFO  org.apache.kafka.clients.consumer.internals.SubscriptionState [] - [Consumer clientId=flink-group-0, groupId=flink-group] Resetting offset for partition input-topic-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[kafka:9093 (id: 1001 rack: null)], epoch=0}}.
+VisaUser User: VisaUser{id=20, name='WEI', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=42, name='RAJ', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=62, name='MARIA', country='USA', visaType='Student'}
+VisaUser User: VisaUser{id=53, name='JOHN', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=8, name='RAJ', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=12, name='JOHN', country='Germany', visaType='Student'}
+VisaUser User: VisaUser{id=98, name='WEI', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=26, name='MARIA', country='Canada', visaType='Work'}
+VisaUser User: VisaUser{id=100, name='MARIA', country='USA', visaType='Student'}
+VisaUser User: VisaUser{id=84, name='JOHN', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=90, name='RAJ', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=78, name='JOHN', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=47, name='JOHN', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=44, name='MARIA', country='Canada', visaType='Student'}
+VisaUser User: VisaUser{id=42, name='MARIA', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=49, name='JOHN', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=96, name='MARIA', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=68, name='JOHN', country='Canada', visaType='Student'}
+VisaUser User: VisaUser{id=39, name='MARIA', country='USA', visaType='Student'}
+VisaUser User: VisaUser{id=6, name='RAJ', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=73, name='MARIA', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=8, name='RAJ', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=73, name='ALICE', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=61, name='MARIA', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=85, name='MARIA', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=71, name='MARIA', country='Canada', visaType='Work'}
+VisaUser User: VisaUser{id=22, name='MARIA', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=77, name='ALICE', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=18, name='ALICE', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=39, name='JOHN', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=93, name='JOHN', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=82, name='JOHN', country='USA', visaType='Student'}
+VisaUser User: VisaUser{id=33, name='JOHN', country='USA', visaType='Student'}
+VisaUser User: VisaUser{id=69, name='JOHN', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=25, name='WEI', country='Germany', visaType='Student'}
+VisaUser User: VisaUser{id=45, name='ALICE', country='Germany', visaType='Student'}
+VisaUser User: VisaUser{id=60, name='RAJ', country='Germany', visaType='Student'}
+VisaUser User: VisaUser{id=34, name='WEI', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=71, name='MARIA', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=11, name='WEI', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=83, name='RAJ', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=97, name='MARIA', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=23, name='MARIA', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=37, name='RAJ', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=51, name='RAJ', country='Canada', visaType='Work'}
+VisaUser User: VisaUser{id=84, name='ALICE', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=6, name='MARIA', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=25, name='ALICE', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=8, name='ALICE', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=49, name='WEI', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=88, name='ALICE', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=9, name='RAJ', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=32, name='JOHN', country='Canada', visaType='Work'}
+VisaUser User: VisaUser{id=94, name='ALICE', country='Canada', visaType='Work'}
+VisaUser User: VisaUser{id=6, name='MARIA', country='Canada', visaType='Work'}
+VisaUser User: VisaUser{id=13, name='WEI', country='USA', visaType='Student'}
+VisaUser User: VisaUser{id=4, name='RAJ', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=75, name='WEI', country='Canada', visaType='Student'}
+VisaUser User: VisaUser{id=1, name='MARIA', country='Canada', visaType='Student'}
+VisaUser User: VisaUser{id=50, name='RAJ', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=54, name='ALICE', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=60, name='ALICE', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=47, name='WEI', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=55, name='JOHN', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=12, name='MARIA', country='USA', visaType='Student'}
+VisaUser User: VisaUser{id=44, name='ALICE', country='USA', visaType='Student'}
+VisaUser User: VisaUser{id=84, name='MARIA', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=100, name='JOHN', country='USA', visaType='Student'}
+VisaUser User: VisaUser{id=85, name='WEI', country='Canada', visaType='Student'}
+VisaUser User: VisaUser{id=49, name='RAJ', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=30, name='RAJ', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=90, name='ALICE', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=100, name='WEI', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=2, name='ALICE', country='Canada', visaType='Work'}
+VisaUser User: VisaUser{id=22, name='RAJ', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=48, name='JOHN', country='Canada', visaType='Work'}
+VisaUser User: VisaUser{id=55, name='ALICE', country='Germany', visaType='Student'}
+VisaUser User: VisaUser{id=24, name='JOHN', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=37, name='MARIA', country='Canada', visaType='Student'}
+VisaUser User: VisaUser{id=17, name='JOHN', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=19, name='ALICE', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=72, name='RAJ', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=36, name='ALICE', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=57, name='ALICE', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=36, name='RAJ', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=52, name='JOHN', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=30, name='WEI', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=95, name='MARIA', country='Canada', visaType='Work'}
+VisaUser User: VisaUser{id=70, name='RAJ', country='Canada', visaType='Student'}
+VisaUser User: VisaUser{id=46, name='RAJ', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=37, name='RAJ', country='Germany', visaType='Student'}
+VisaUser User: VisaUser{id=55, name='WEI', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=49, name='JOHN', country='Germany', visaType='Student'}
+VisaUser User: VisaUser{id=71, name='ALICE', country='Canada', visaType='Student'}
+VisaUser User: VisaUser{id=78, name='MARIA', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=5, name='JOHN', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=75, name='ALICE', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=86, name='WEI', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=94, name='JOHN', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=2, name='RAJ', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=39, name='WEI', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=44, name='WEI', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=41, name='MARIA', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=8, name='WEI', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=39, name='JOHN', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=23, name='ALICE', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=70, name='JOHN', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=16, name='JOHN', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=39, name='WEI', country='Germany', visaType='Student'}
+VisaUser User: VisaUser{id=19, name='WEI', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=56, name='MARIA', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=28, name='JOHN', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=47, name='MARIA', country='USA', visaType='Student'}
+VisaUser User: VisaUser{id=86, name='RAJ', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=92, name='RAJ', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=33, name='RAJ', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=50, name='WEI', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=68, name='MARIA', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=22, name='JOHN', country='Germany', visaType='Student'}
+VisaUser User: VisaUser{id=67, name='ALICE', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=83, name='MARIA', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=60, name='ALICE', country='Canada', visaType='Student'}
+VisaUser User: VisaUser{id=5, name='WEI', country='USA', visaType='Student'}
+VisaUser User: VisaUser{id=45, name='MARIA', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=10, name='JOHN', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=39, name='WEI', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=100, name='ALICE', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=60, name='ALICE', country='Canada', visaType='Student'}
+VisaUser User: VisaUser{id=61, name='WEI', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=45, name='ALICE', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=78, name='WEI', country='India', visaType='Student'}
+VisaUser User: VisaUser{id=36, name='ALICE', country='Canada', visaType='Work'}
+VisaUser User: VisaUser{id=16, name='ALICE', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=1, name='ALICE', country='Germany', visaType='Work'}
+VisaUser User: VisaUser{id=14, name='RAJ', country='India', visaType='Work'}
+VisaUser User: VisaUser{id=6, name='MARIA', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=8, name='MARIA', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=21, name='ALICE', country='China', visaType='Student'}
+VisaUser User: VisaUser{id=85, name='ALICE', country='China', visaType='Work'}
+VisaUser User: VisaUser{id=68, name='WEI', country='Canada', visaType='Student'}
+VisaUser User: VisaUser{id=73, name='ALICE', country='USA', visaType='Work'}
+VisaUser User: VisaUser{id=11, name='RAJ', country='USA', visaType='Work'}
