@@ -1,3 +1,7 @@
+flink 1.19.0 supports j 11
+flink 1.19.2 supports j 17
+
+
 flink 2 
 
 we will use java 17.
