@@ -1,0 +1,181 @@
+
+KafkaToDbeg2
+
+----------------------------------------------------------------------------------------------------------
+jar
+mvn clean install
+
+
+DB
+
+
+PS C:\tmp\afjdbccon\flink-jdbc-con-proj\docker> docker exec -it docker-postgres-1 psql -U postgres -d mainschema
+psql (17.0 (Debian 17.0-1.pgdg120+1))
+Type "help" for help.
+
+mainschema=#
+mainschema=# \conninfo
+You are connected to database "mainschema" as user "postgres" via socket in "/var/run/postgresql" at port "5432".
+mainschema=# \conninfo
+You are connected to database "mainschema" as user "postgres" via socket in "/var/run/postgresql" at port "5432".
+mainschema=# \dt
+          List of relations
+ Schema |  Name   | Type  |  Owner
+--------+---------+-------+----------
+ public | flusers | table | postgres
+(1 row)
+
+mainschema=# \d flusers
+                                    Table "public.flusers"
+ Column |          Type          | Collation | Nullable |               Default
+--------+------------------------+-----------+----------+-------------------------------------
+ id     | integer                |           | not null | nextval('flusers_id_seq'::regclass)
+ name   | character varying(255) |           | not null |
+Indexes:
+    "flusers_pkey" PRIMARY KEY, btree (id)
+
+mainschema=# SELECT * FROM flusers;
+ id | name
+----+-------
+  1 | Alice
+  2 | Diana
+(2 rows)
+
+
+
+
+
+
+
+
+
+
+PS C:\tmp\afjdbccon\flink-jdbc-con-proj\docker> docker exec -it docker-postgres-1 psql -U postgres -d mainschema
+psql (17.0 (Debian 17.0-1.pgdg120+1))
+Type "help" for help.
+
+mainschema=# select  * from visa_users;
+mainschema=#
+
+
+
+Flink jobs
+
+PS C:\tmp\afjdbccon\flink-jdbc-con-proj\docker\jars> docker-compose down
+time="2025-04-11T08:39:58+05:30" level=warning msg="C:\\tmp\\afjdbccon\\flink-jdbc-con-proj\\docker\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+[+] Running 7/7
+ ✔ Container docker-zookeeper-1    Removed                                                                                                                         10.6s
+ ✔ Container docker-taskmanager-2  Removed                                                                                                                          1.0s
+ ✔ Container docker-taskmanager-1  Removed                                                                                                                          1.1s
+ ✔ Container docker-jobmanager-1   Removed                                                                                                                          1.1s
+ ✔ Container docker-kafka-1        Removed                                                                                                                          5.1s
+ ✔ Container docker-postgres-1     Removed                                                                                                                          0.7s
+ ✔ Network docker_default          Removed                                                                                                                          0.9s
+PS C:\tmp\afjdbccon\flink-jdbc-con-proj\docker\jars> docker-compose up --build -d
+time="2025-04-11T08:44:50+05:30" level=warning msg="C:\\tmp\\afjdbccon\\flink-jdbc-con-proj\\docker\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+[+] Running 7/7
+ ✔ Network docker_default          Created                                                                                                                          0.1s
+ ✔ Container docker-zookeeper-1    Started                                                                                                                          0.7s
+ ✔ Container docker-postgres-1     Started                                                                                                                          0.8s
+ ✔ Container docker-kafka-1        Started                                                                                                                          0.8s
+ ✔ Container docker-jobmanager-1   Started                                                                                                                          1.0s
+ ✔ Container docker-taskmanager-2  Started                                                                                                                          1.2s
+ ✔ Container docker-taskmanager-1  Started                                                                                                                          1.5s
+PS C:\tmp\afjdbccon\flink-jdbc-con-proj\docker\jars> docker cp .\db.jar docker-jobmanager-1:/tmp/db.jar
+Successfully copied 82.2MB to docker-jobmanager-1:/tmp/db.jar
+PS C:\tmp\afjdbccon\flink-jdbc-con-proj\docker\jars> docker exec -it docker-jobmanager-1 /opt/flink/bin/flink run -c com.example.jobs.KafkaToDbeg2   /tmp/db.jar
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+Job has been submitted with JobID 6bf014751bbead466262e706e09a58ea
+
+
+
+Kafka
+
+C:\Users\ashfa>docker exec -it docker-kafka-1 bash
+root@b86eef8b9340:/#  kafka-topics.sh --create  --bootstrap-server localhost:9092   --replication-factor 1   --partitions 1  --topic input-topic
+Created topic input-topic.
+root@b86eef8b9340:/# kafka-topics.sh --list --bootstrap-server localhost:9092
+input-topic
+my-topic
+root@b86eef8b9340:/# kafka-topics.sh --list --bootstrap-server localhost:9093
+input-topic
+my-topic
+root@b86eef8b9340:/#
+
+----------------------------------------------------------------------------------------------------------
+
+
+
+DbToKafkaJob java 11 and 17 verified for  flink:1.19.0-scala_2.12 and apache/flink:1.19.2-java17
+
+JAR
+mvn clean install
+
+
+
+
+Docker
+
+
+PS C:\tmp\afjdbccon\flink-jdbc-con-proj\docker\jars> docker cp .\db.jar docker-jobmanager-1:/tmp/db.jar
+Successfully copied 82.2MB to docker-jobmanager-1:/tmp/db.jar
+PS C:\tmp\afjdbccon\flink-jdbc-con-proj\docker\jars> docker exec -it docker-jobmanager-1 /opt/flink/bin/flink run -c com.example.jobs.DbToKafkaJob   /tmp/db.jar
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+Job has been submitted with JobID c35a2463fb46e6ce53b1f00ae5dd52a9
+Program execution finished
+Job with JobID c35a2463fb46e6ce53b1f00ae5dd52a9 has finished.
+Job Runtime: 3046 ms
+
+
+What's next:
+    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug docker-jobmanager-1
+    Learn more at https://docs.docker.com/go/debug-cli/
+PS C:\tmp\afjdbccon\flink-jdbc-con-proj\docker\jars>
+
+
+
+
+
+ DB (input)
+ PS C:\tmp\afjdbccon\flink-jdbc-con-proj\docker> docker exec -it docker-postgres-1 psql -U postgres -d mainschema
+ psql (17.0 (Debian 17.0-1.pgdg120+1))
+ Type "help" for help.
+
+ mainschema=# \dt
+            List of relations
+  Schema |    Name    | Type  |  Owner
+ --------+------------+-------+----------
+  public | flusers    | table | postgres
+  public | visa_users | table | postgres
+
+
+
+ mainschema=# select * from visa_users;
+  id |    name     | country | visa_type
+ ----+-------------+---------+-----------
+   1 | John Doe    | USA     | Tourist
+   2 | Alice Smith | Canada  | Work
+ (2 rows)
+
+
+
+
+
+ Kafka (output)
+
+ C:\Users\ashfa>docker exec -it docker-kafka-1 bash
+
+
+ root@e4e158145a74:/# kafka-console-consumer.sh    --bootstrap-server localhost:9092  --topic my-topic --from-beginning
+ {"id":1,"name":"John Doe","country":"USA","visaType":"Tourist"}
+ {"id":2,"name":"Alice Smith","country":"Canada","visaType":"Work"}
+
+
