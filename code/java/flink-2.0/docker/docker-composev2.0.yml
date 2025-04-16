@@ -4,8 +4,8 @@ services:
     image: flink:2.0.0-scala_2.12-java17
     ports:
       - "8081:8081"
-    volumes:
-      - ./jars:/opt/flink/plugins/kafka/
+    # volumes:
+      # - ./jars:/opt/flink/plugins/kafka/ we will use docker cp to copy jars
     command: jobmanager
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
@@ -14,8 +14,8 @@ services:
     image: flink:2.0.0-scala_2.12-java17
     depends_on:
       - jobmanager
-    volumes:
-      - ./jars:/opt/flink/plugins/kafka/
+    # volumes:
+      # - ./jars:/opt/flink/plugins/kafka/ 
     command: taskmanager
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
