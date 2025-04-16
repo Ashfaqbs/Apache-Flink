@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+
+  jobmanager:
+    image: flink:2.0.0-scala_2.12-java17
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+
+  # 🟢 Flink TaskManager (Workers)
+  taskmanager:
+    image: flink:2.0.0-scala_2.12-java17
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    deploy:
+      replicas: 2
