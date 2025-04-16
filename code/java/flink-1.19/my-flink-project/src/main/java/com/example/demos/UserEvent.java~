@@ -1,7 +1,0 @@
-package com.example.demos;
-public class UserEvent {
-    private String userId;
-    private String action; // "CLICK", "ADD_TO_CART", etc.
-
-    // Getters, setters, constructors
-}
