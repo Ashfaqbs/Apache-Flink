@@ -1,0 +1,5 @@
+PS C:\Users\ashfa> docker exec -it docker-kafka-1 kafka-topics.sh --list --bootstrap-server localhost:9092
+my-topic
+
+
+ docker exec -it docker-kafka-1 /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --create  --topic bank-transactions --partitions 3   --replication-factor 1
