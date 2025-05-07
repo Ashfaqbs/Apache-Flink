@@ -1,0 +1,12 @@
+PS C:\Users\ashfa> docker exec -it docker-postgres-1 psql -U postgres -d mainschema
+
+
+psql (17.0 (Debian 17.0-1.pgdg120+1))
+Type "help" for help.
+
+mainschema=# SELECT * FROM users LIMIT 10;
+ name | email
+------+-------
+(0 rows)
+
+mainschema=#
