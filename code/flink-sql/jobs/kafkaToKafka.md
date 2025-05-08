@@ -1,6 +1,7 @@
 
-Producer
+- Producer
 
+```
 C:\tmp\flink-sql\kafka-scripts>python producer.py
 Sending: {'name': 'Sheila Grant', 'email': 'sylvia83@example.net', 'role': 'developer'}
 Sending: {'name': 'Crystal Osborne', 'email': 'travis02@example.net', 'role': 'architect'}
@@ -15,6 +16,7 @@ Sending: {'name': 'Kayla Robinson', 'email': 'amygreer@example.net', 'role': 'de
 ✅ All messages sent.
 
 C:\tmp\flink-sql\kafka-scripts> 
+
 
 
 Consumer 
@@ -42,7 +44,7 @@ Created topic o-topic.
 
 
 
-Flink :
+Flink SQL :
 
 
 
@@ -90,7 +92,8 @@ Job ID: 2d034349fb5fa2af873658e7abdb0579
 
 Flink SQL>
 
+```
 
-Flink UI 
+- Flink UI 
 
-![alt text](/jobs/images/k2k.png)
+![alt text](./images/k2k.png)
