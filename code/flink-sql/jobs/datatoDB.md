@@ -1,32 +1,23 @@
+
+
+```
 C:\tmp\flink-sql\docker>docker-compose up -d
-time="2025-04-29T22:30:29+05:30" level=warning msg="C:\\tmp\\flink-sql\\docker\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
-[+] Running 7/7
+
+
  ✔ Network docker_default          Created                                                                                                                    0.0s 
  ✔ Container docker-postgres-1     Started                                                                                                                    0.6s 
  ✔ Container docker-zookeeper-1    Started                                                                                                                    0.5s 
  ✔ Container docker-kafka-1        Started                                                                                                                    0.6s 
  ✔ Container docker-jobmanager-1   Started                                                                                                                    0.7s 
  ✔ Container docker-taskmanager-1  Started                                                                                                                    1.1s 
- ✔ Container docker-taskmanager-2  Started                                                                                                                    0.8s 
+ ✔ Container docker-taskmanager-2  Started                                                                                                                    0.8s
+```
 
-C:\tmp\flink-sql\docker>
 
- connect to sql client from jobmanager container
+```
 
-Flink SQL> docker exec -it docker-jobmanager-1 ./bin/sql-client.sh
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-What's next:
-    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug docker-jobmanager-1
-    Learn more at https://docs.docker.com/go/debug-cli/
 (base) PS C:\Users\ashfa> docker exec -it docker-jobmanager-1 ./bin/sql-client.sh
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
+
 WARNING: Unknown module: jdk.compiler specified to --add-exports
 
                                    ▒▓██▓██▒
@@ -119,13 +110,16 @@ Job ID: 05c011e657701af775ea92d542353392
 
 
 Flink SQL>
+```
 
 
-Flink UI 
+- Flink UI 
 
-![alt text](/jobs/images/image.png)
+![alt text](./images/image.png)
 
 
+
+```
 DB
 
 PS C:\Users\ashfa> docker exec -it docker-postgres-1 psql -U postgres
