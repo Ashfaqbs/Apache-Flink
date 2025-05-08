@@ -1,6 +1,6 @@
 - Source  - > tumbling window -> Dynamic table  
 
-- Producing the data from (../kafka-scripts/TWUserAction.py)
+- Producing the data from [TWUserAction.py](../kafka-scripts/TWUserAction.py)
 
 - 1 hour window 
 
