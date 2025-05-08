@@ -1,6 +1,6 @@
-kafka to live query :
+- kafka to live query :
 
-(../kafka-scripts/TWUserAction.py)
+[File : TWUserAction.py](./kafka-scripts/TWUserAction.py)
 sending to kafka topic : user-topic
 
 
