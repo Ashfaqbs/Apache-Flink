@@ -1,8 +1,10 @@
-Docker 
+- Docker 
 
+
+```
 
 C:\tmp\flink-sql\docker>docker-compose up -d
-time="2025-04-30T15:37:22+05:30" level=warning msg="C:\\tmp\\flink-sql\\docker\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+
 [+] Running 7/7
  ✔ Network docker_default          Created                                                                                0.1s 
  ✔ Container docker-zookeeper-1    Started                                                                                1.0s 
@@ -12,13 +14,10 @@ time="2025-04-30T15:37:22+05:30" level=warning msg="C:\\tmp\\flink-sql\\docker\\
  ✔ Container docker-taskmanager-2  Started                                                                                1.9s 
  ✔ Container docker-taskmanager-1  Started                                                                                1.5s 
 
-C:\tmp\flink-sql\docker>
-
-
-
 DB
 
 PS C:\Users\ashfa> docker exec -it docker-postgres-1 psql -U postgres -d mainschema
+
 psql (17.0 (Debian 17.0-1.pgdg120+1))
 Type "help" for help.
 
@@ -39,17 +38,6 @@ mainschema=# SELECT * FROM users LIMIT 10;
  Karen Hill | moraemily@example.org
 (1 row)
 
-mainschema=# SELECT * FROM users LIMIT 10;
-    name    |         email
-------------+-----------------------
- Karen Hill | moraemily@example.org
-(1 row)
-
-mainschema=# SELECT * FROM users LIMIT 10;
-    name    |         email
-------------+-----------------------
- Karen Hill | moraemily@example.org
-(1 row)
 
 mainschema=# INSERT INTO users (name, email) VALUES
 ('Karen Hill', 'karen@example.com'),
@@ -116,10 +104,7 @@ FLINK SQL
 
 
 PS C:\Users\ashfa> docker exec -it docker-jobmanager-1 ./bin/sql-client.sh
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
+
 WARNING: Unknown module: jdk.compiler specified to --add-exports
 
                                    ▒▓██▓██▒
@@ -227,10 +212,11 @@ Job ID: ed4f382b1febcd8d7940a66e432fd83a
 
 Flink SQL>
 
+```
 
-Flink UI
+- Flink UI
 
-![alt text](/jobs/images/db2k.png)
+![alt text](./images/db2k.png)
 
 
 
@@ -247,6 +233,7 @@ Flink UI
 
 Kafka 
 
+```
 
 C:\tmp\flink-sql\kafka-scripts>python consumer.py
 ✅ Listening to 'my-topic'... Press Ctrl+C to exit.
