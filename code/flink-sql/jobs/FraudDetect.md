@@ -17,40 +17,20 @@ PS C:\Users\ashfa>
 Kafka 
 
 ```
-PS C:\Users\ashfa> docker exec -it docker-kafka-1 /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
-my-topic
 
-What's next:
-    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug docker-kafka-1
-    Learn more at https://docs.docker.com/go/debug-cli/
 PS C:\Users\ashfa> docker exec -it docker-kafka-1 /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --create  --topic bank-transactions --partitions 3   --replication-factor 1
 Created topic bank-transactions.
 
-What's next:
-    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug docker-kafka-1
-    Learn more at https://docs.docker.com/go/debug-cli/
-PS C:\Users\ashfa> docker exec -it docker-kafka-1 /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --create  --topic fraud-mv-topic --partitions 3   --replication-factor 1
-Error while executing topic command : Topic 'fraud-mv-topic' already exists.
-[2025-05-06 17:10:05,549] ERROR org.apache.kafka.common.errors.TopicExistsException: Topic 'fraud-mv-topic' already exists.
- (kafka.admin.TopicCommand$)
-
-What's next:
-    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug docker-kafka-1
-    Learn more at https://docs.docker.com/go/debug-cli/
-PS C:\Users\ashfa>
 ```
 
 
-Flink 
+- Flink SQL
 
 ````
 
 Loading personal and system profiles took 3560ms.
 PS C:\Users\ashfa> docker exec -it docker-jobmanager-1 ./bin/sql-client.sh
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
+
 WARNING: Unknown module: jdk.compiler specified to --add-exports
 
                                    ▒▓██▓██▒
@@ -231,7 +211,7 @@ Flink SQL>
 ```
 
 
-Producer 
+- Producer 
 
 ```
 C:\tmp\flink-sql\kafka-scripts>python bankTransactionGen.py
