@@ -1,3 +1,5 @@
+
+```
 PS C:\Users\ashfa> docker ps
 CONTAINER ID   IMAGE                           COMMAND                  CREATED          STATUS          PORTS                                                NAMES
 687f1346b7d1   apache/flink:1.19.2-java17      "/docker-entrypoint.…"   11 seconds ago   Up 10 seconds   6123/tcp, 8081/tcp                                   docker-taskmanager-2
@@ -7,6 +9,10 @@ c3c198a8abd8   wurstmeister/zookeeper:latest   "/bin/sh -c '/usr/sb…"   11 sec
 cac11f27e2d9   postgres:latest                 "docker-entrypoint.s…"   11 seconds ago   Up 10 seconds   0.0.0.0:5432->5432/tcp                               docker-postgres-1
 e970f9618fa2   wurstmeister/kafka:latest       "start-kafka.sh"         11 seconds ago   Up 10 seconds   0.0.0.0:9092->9092/tcp, 9093/tcp                     docker-kafka-1
 384a39d7fa4c   mongo:latest                    "docker-entrypoint.s…"   11 seconds ago   Up 10 seconds   0.0.0.0:27017->27017/tcp                             docker-mongo-1
+
+
+- Mongo Login
+
 PS C:\Users\ashfa> docker exec -it docker-mongo-1 mongosh
 Current Mongosh Log ID: 6811fb0b486c2ad294964032
 Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.1
@@ -105,7 +111,7 @@ ADD JAR '/opt/flink/custom-lib/postgresql-42.6.0.jar';
 ADD JAR '/opt/flink/custom-lib/flink-sql-connector-mongodb-1.2.0-1.19.jar';
 
 
-Flink 
+Flink SQL
 
 Flink SQL> CREATE TABLE mongo_users (
 >     fname STRING,
@@ -144,13 +150,14 @@ Flink SQL> INSERT INTO pg_users
 [INFO] SQL update statement has been successfully submitted to the cluster:
 Job ID: 1898ddc3690b6161ec088bc28e25e29a
 
+```
+
+- FLINK UI
 
 
-FLINK UI
+![alt text](./images/mongo2pg.png)
 
-
-![alt text](/jobs/images/mongo2pg.png)
-
+```
 postgres DB
 
 mainschema=# select * from users;
@@ -169,4 +176,4 @@ mainschema=# select * from users;
 
 mainschema=#
 
-
+```
