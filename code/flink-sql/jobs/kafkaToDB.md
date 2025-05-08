@@ -1,6 +1,7 @@
 
-Setup docker for kafka and flink 
+- Setup docker for kafka and flink 
 
+```
 PS C:\Users\ashfa> docker ps
 CONTAINER ID   IMAGE                           COMMAND                  CREATED         STATUS         PORTS                                                NAMES
 049b42fa93e0   apache/flink:1.19.2-java17      "/docker-entrypoint.…"   4 minutes ago   Up 4 minutes   6123/tcp, 8081/tcp                                   docker-taskmanager-2
@@ -14,16 +15,14 @@ my-topic
 
 
 
+
 paste the jar files to the custom folder and paste to lib of jobmanager container pasting directly will remove the existing jars.
 
 
 
 PS C:\Users\ashfa> docker exec -it docker-jobmanager-1 ./bin/sql-client.sh
 \WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
-WARNING: Unknown module: jdk.compiler specified to --add-exports
+
 
                                    ▒▓██▓██▒
                                ▓████▒▒█▓▒▓███▓▒
@@ -182,7 +181,7 @@ mainschema=# SELECT * FROM users LIMIT 10;
 mainschema=#
 
 
+```
+- Flink UI
 
-Flink UI
-
-![alt text](/jobs/images/kafka2db.png)
+![alt text](./images/kafka2db.png)
