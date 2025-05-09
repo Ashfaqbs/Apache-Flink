@@ -42,6 +42,7 @@ services:
       - postgres
     ports:
       - "8081:8081"
+      - "8083:8083"  
     command: jobmanager
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
@@ -59,7 +60,7 @@ services:
     volumes:
       - ./jars:/opt/flink/custom-lib
     deploy:
-      replicas: 2  # Fixed syntax error
+      replicas: 2  
   mongo:
     image: mongo:latest
     container_name: docker-mongo-1
