@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "e928b9bf-d539-415c-a66e-7d206bfe7775",
+		"name": "Flink-SQL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23143768"
+	},
+	"item": [
+		{
+			"name": "K2DB",
+			"item": [
+				{
+					"name": "Create a session",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"sessionName\": \"test-session\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/v1/sessions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"v1",
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register a source",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n\r\n{\r\n  \"statement\": \"CREATE TABLE kafka_users (name STRING, email STRING, role STRING) WITH ('connector' = 'kafka', 'topic' = 'my-topic', 'properties.bootstrap.servers' = 'kafka:9093', 'properties.group.id' = 'flink-group', 'scan.startup.mode' = 'earliest-offset', 'format' = 'json', 'json.ignore-parse-errors' = 'true')\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/v1/sessions/09e52ad3-f3a8-47e8-9bd1-8fa2e8e86210/statements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"v1",
+								"sessions",
+								"09e52ad3-f3a8-47e8-9bd1-8fa2e8e86210",
+								"statements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register a sink",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"statement\": \"CREATE TABLE users_sink (name STRING, email STRING) WITH ('connector' = 'jdbc', 'url' = 'jdbc:postgresql://postgres:5432/mainschema', 'table-name' = 'users', 'username' = 'postgres', 'password' = 'admin', 'driver' = 'org.postgresql.Driver')\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/v1/sessions/09e52ad3-f3a8-47e8-9bd1-8fa2e8e86210/statements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"v1",
+								"sessions",
+								"09e52ad3-f3a8-47e8-9bd1-8fa2e8e86210",
+								"statements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "submit the job",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"statement\": \"INSERT INTO users_sink SELECT name, email FROM kafka_users WHERE role = 'developer'\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/v1/sessions/09e52ad3-f3a8-47e8-9bd1-8fa2e8e86210/statements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"v1",
+								"sessions",
+								"09e52ad3-f3a8-47e8-9bd1-8fa2e8e86210",
+								"statements"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
