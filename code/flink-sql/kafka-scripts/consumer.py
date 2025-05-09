@@ -1,8 +1,9 @@
 from kafka import KafkaConsumer
 import json
 
+topic = 'source3'
 consumer = KafkaConsumer(
-    'user-topic',
+    topic,
     bootstrap_servers='localhost:9092',
     auto_offset_reset='earliest',
     enable_auto_commit=True,
@@ -10,7 +11,7 @@ consumer = KafkaConsumer(
     value_deserializer=lambda m: json.loads(m.decode('utf-8'))
 )
 
-print(" Listening to 'user-topic'... Press Ctrl+C to exit.\n")
+print(f" Listening to {topic} Topic... Press Ctrl+C to exit.\n")
 
 try:
     for message in consumer:
