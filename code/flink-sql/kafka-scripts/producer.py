@@ -22,7 +22,7 @@ for _ in range(10):
         "role": random.choice(roles)
     }
     print(f"Sending: {data}")
-    producer.send('i-topic', value=data)
+    producer.send('my-topic', value=data)
     time.sleep(0.5)  
 
 producer.flush()
