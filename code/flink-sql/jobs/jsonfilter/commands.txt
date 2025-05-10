@@ -1,0 +1,13 @@
+PS C:\Users\ashfa>  docker exec -it docker-kafka-1 /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --create  --topic Input-topic --partitions 3   --replication-factor 1
+Created topic Input-topic.
+
+What's next:
+    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug docker-kafka-1
+    Learn more at https://docs.docker.com/go/debug-cli/
+PS C:\Users\ashfa>  docker exec -it docker-kafka-1 /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --create  --topic output-topic --partitions 3   --replication-factor 1
+Created topic output-topic.
+
+What's next:
+    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug docker-kafka-1
+    Learn more at https://docs.docker.com/go/debug-cli/
+PS C:\Users\ashfa>
