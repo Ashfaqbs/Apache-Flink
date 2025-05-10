@@ -73,4 +73,65 @@ Received message:
 
 ```
 
-- UI :
+- Flink SQL:
+
+```
+Flink SQL> CREATE TABLE kafka_input (
+>   username    STRING,
+>   userid      STRING,
+>   event_time  TIMESTAMP(3) METADATA FROM 'timestamp' VIRTUAL,
+>   user_type   STRING,
+>   category    STRING,
+>   orders      ARRAY<ROW<
+>     orderid    INT,
+>     orderName  STRING,
+>     qty        INT
+>   >>
+> ) WITH (
+>   'connector'                   = 'kafka',
+>   'topic'                       = 'Input-topic',
+>   'properties.bootstrap.servers'= 'kafka:9093',
+>   'properties.group.id'         = 'flink-filter-consumer',
+>   'scan.startup.mode'           = 'earliest-offset',
+>   'format'                      = 'json',
+>   'json.fail-on-missing-field'  = 'false',
+>   'json.ignore-parse-errors'    = 'true'
+> );
+[INFO] Execute statement succeed.
+
+Flink SQL> CREATE TABLE kafka_output (
+>   username    STRING,
+>   userid      STRING,
+>   event_time  TIMESTAMP(3),
+>   user_type   STRING,
+>   category    STRING,
+>   orders      ARRAY<ROW<
+>     orderid    INT,
+>     orderName  STRING,
+>     qty        INT
+>   >>
+> ) WITH (
+>   'connector'                   = 'kafka',
+>   'topic'                       = 'output-topic',
+>   'properties.bootstrap.servers'= 'kafka:9093',
+>   'format'                      = 'json',
+>   'json.timestamp-format.standard' = 'ISO-8601'
+> );
+[INFO] Execute statement succeed.
+
+Flink SQL> INSERT INTO kafka_output
+> SELECT
+>   username,
+>   userid,
+>   event_time,
+>   user_type,
+>   category,
+>   orders
+> FROM kafka_input
+> WHERE user_type = 'adult'
+>   AND category = 'prime';
+[INFO] Submitting SQL update statement to the cluster...
+[INFO] SQL update statement has been successfully submitted to the cluster:
+Job ID: 9b2fa1fe9869a4b2c51bff16e4a858ec
+
+```
