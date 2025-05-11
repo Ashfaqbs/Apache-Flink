@@ -1,7 +1,7 @@
 from kafka import KafkaConsumer
 import json
 
-topic = 'source3'
+topic = 'topic-2'
 consumer = KafkaConsumer(
     topic,
     bootstrap_servers='localhost:9092',
