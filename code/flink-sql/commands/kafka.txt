@@ -1,4 +1,4 @@
-PS C:\Users\ashfa> docker exec -it docker-kafka-1 kafka-topics.sh --list --bootstrap-server localhost:9092
+docker exec -it docker-kafka-1 kafka-topics.sh --list --bootstrap-server localhost:9092
 my-topic
 
 
