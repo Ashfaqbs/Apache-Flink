@@ -1,57 +1,58 @@
-from kafka import KafkaProducer
+#!/usr/bin/env python3
 import json
-import random
-from datetime import datetime
 import time
+import random
+import string
+from kafka import KafkaProducer
 
 producer = KafkaProducer(
-    bootstrap_servers='localhost:9092',
-    value_serializer=lambda v: json.dumps(v).encode('utf-8')
+    bootstrap_servers='localhost:9092',              
+    key_serializer=lambda k: k.encode('utf-8'),       
+    value_serializer=lambda v: json.dumps(v).encode('utf-8'),  
+    acks='all',                                       
+    retries=5                                         
 )
 
-known_items = ["Washer", "Fridge", "Microwave", "Dishwasher", "Oven", "Blender", "TV", "Refrigerator", "Toaster", "Coffee Maker"]
-
-def generate_random_orders():
-    orders = []
-    total_items = 0
-
-    while total_items < 10:
-        num_items = random.randint(1, 5) 
-        total_items += num_items
-
-        for _ in range(num_items):
-            item_name = random.choice(known_items)
-            item_qty = random.randint(1, 5)  
-            cvar_value = f"randomValue{random.randint(1, 100)}"
-            
-            order = {
-                "itemId": str(random.randint(100, 999)),
-                "Itemname": item_name,
-                "ItemQty": item_qty,
-                "cJSON": {"cVar": cvar_value}
-            }
-            orders.append(order)
-
-    return orders
-
-def send_order_to_kafka(email, orders, topic='topic-1'):
-    message = {
-        "cEmail": email,
-        "CTimeStamp": datetime.utcnow().isoformat() + "Z",
-        "orders": orders
+def make_order():
+    """Generate a random order element with nested cJSON."""
+    return {
+        "itemId": ''.join(random.choices(string.digits, k=2)),
+        "Itemname": random.choice(["Refrigerator", "Washer", "Oven", "Microwave", "Dishwasher"]),
+        "ItemQty": random.randint(1, 5),
+        "cJSON": {"cVar": str(random.randint(0, 9))}
     }
-    producer.send(topic, message)
-    producer.flush()
-    print(f"\n Sent message to {topic}:\n{json.dumps(message, indent=2)}")
 
+def make_user_payload():
+    """Build a nested JSON payload with 1–5 orders."""
+    num_orders = random.randint(1, 5)  
+    return {
+        "cEmail": random.choice([
+            "alice@example.com", "bob@example.com", "charlie@example.com"
+        ]),
+        "CTimeStamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "orders": [make_order() for _ in range(num_orders)]
+    }
 
-if __name__ == "__main__":
-    user_email = "user@example.com"
-
+try:
     while True:
-        orders_list = generate_random_orders()
+        payload = make_user_payload()
+        key = payload["cEmail"]
 
-        send_order_to_kafka(user_email, orders_list)
+      
+        producer.send(
+            topic='sourceb',
+            key=key,
+            value=payload
+        )
+        print(f"Sent to topic-1: {json.dumps(payload)}")
 
-        print("\n Waiting for next batch (5 minutes)...")
-        time.sleep(300)  # 300 seconds = 5 minutes
+       
+        producer.flush()  
+
+        time.sleep(2)     
+
+except KeyboardInterrupt:
+    print("Shutting down producer...")
+
+finally:
+    producer.close()
