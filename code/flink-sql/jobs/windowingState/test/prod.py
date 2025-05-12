@@ -5,6 +5,7 @@ import random
 import string
 from kafka import KafkaProducer
 
+topic='topic-2'
 producer = KafkaProducer(
     bootstrap_servers='localhost:9092',              
     key_serializer=lambda k: k.encode('utf-8'),       
@@ -40,11 +41,11 @@ try:
 
       
         producer.send(
-            topic='sourceb',
+            topic,
             key=key,
             value=payload
         )
-        print(f"Sent to topic-1: {json.dumps(payload)}")
+        print(f"Sent to {topic} topic : {json.dumps(payload)}")
 
        
         producer.flush()  
