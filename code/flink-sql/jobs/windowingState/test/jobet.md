@@ -134,3 +134,168 @@ Job ID: df7039508300205478f9d00c8b206f76
 
 
 ```
+
+
+k -> k flow 2 NW
+
+```
+Flink SQL> CREATE TABLE user_orders (
+>   cEmail     STRING,
+>   CTimeStamp STRING,
+>   orders     ARRAY<ROW<
+>                 itemId    STRING,
+>                 Itemname  STRING,
+>                 ItemQty   INT,
+>                 cJSON     ROW<cVar STRING>
+>               >>,
+>   event_ts AS CAST(CTimeStamp AS TIMESTAMP(3)),
+>   WATERMARK FOR event_ts AS event_ts - INTERVAL '1' MINUTE
+> ) WITH (
+>   'connector'                    = 'kafka',
+>   'topic'                        = 'sourceb',
+>   'properties.bootstrap.servers' = 'kafka:9093',
+>   'properties.group.id'          = 'flink-eventtime-consumer',
+>   'scan.startup.mode'            = 'earliest-offset',
+>   'format'                       = 'json',
+>   'json.fail-on-missing-field'   = 'false',
+>   'json.ignore-parse-errors'     = 'true'
+> );
+[INFO] Execute statement succeed.
+
+Flink SQL> CREATE TABLE orders_agg (
+>   window_start TIMESTAMP(3),
+>   window_end   TIMESTAMP(3),
+>   Itemname     STRING,
+>   total_qty    BIGINT
+> ) WITH (
+>   'connector'                    = 'kafka',
+>   'topic'                        = 'sourcec',
+>   'properties.bootstrap.servers' = 'kafka:9093',
+>   'format'                       = 'json',
+>   'json.timestamp-format.standard' = 'ISO-8601'
+> );
+[INFO] Execute statement succeed.
+
+Flink SQL> INSERT INTO orders_agg
+> SELECT
+>   TUMBLE_START(event_ts, INTERVAL '5' MINUTE) AS window_start,
+>   TUMBLE_END(event_ts,   INTERVAL '5' MINUTE) AS window_end,
+>   item.Itemname                         AS Itemname,
+>   SUM(item.ItemQty)                     AS total_qty
+> FROM user_orders
+>   CROSS JOIN UNNEST(orders) AS item (itemId, Itemname, ItemQty, cJSON)
+> GROUP BY
+>   TUMBLE(event_ts, INTERVAL '5' MINUTE),
+>   item.Itemname;
+[INFO] Submitting SQL update statement to the cluster...
+[INFO] SQL update statement has been successfully submitted to the cluster:
+Job ID: f5e2f044f86c0fbbfe4fe7f057906955
+
+```
+
+
+
+K -> DB NW
+
+
+
+
+
+-------------------Source 
+
+Flink SQL> CREATE TABLE user_orders (
+   cEmail      STRING,
+   CTimeStamp  TIMESTAMP_LTZ(3),                           
+   orders      ARRAY<ROW<
+                  itemId    STRING,
+                  Itemname  STRING,
+                  ItemQty   INT,
+                  cJSON     ROW<cVar STRING>
+                >>,
+   WATERMARK FOR CTimeStamp AS CTimeStamp - INTERVAL '1' MINUTE
+ ) WITH (
+   'connector'                         = 'kafka',
+   'topic'                             = 'topic-2',
+  'properties.bootstrap.servers'      = 'kafka:9093',
+   'properties.group.id'               = 'flink-eventtime-consumer',
+   'scan.startup.mode'                 = 'earliest-offset',
+   'format'                            = 'json',
+   'json.fail-on-missing-field'        = 'false',
+   'json.ignore-parse-errors'          = 'true',
+   'json.timestamp-format.standard'    = 'ISO-8601'     
+  );
+
+
+
+OR 
+-----------------------------   -- zero lag----------------------------
+
+
+
+CREATE TABLE user_orders (
+   cEmail      STRING,
+   CTimeStamp  TIMESTAMP_LTZ(3),                           
+   orders      ARRAY<ROW<
+                  itemId    STRING,
+                  Itemname  STRING,
+                  ItemQty   INT,
+                  cJSON     ROW<cVar STRING>
+                >>,
+    WATERMARK FOR CTimeStamp AS CTimeStamp                   
+ ) WITH (
+   'connector'                         = 'kafka',
+   'topic'                             = 'topic-2',
+  'properties.bootstrap.servers'      = 'kafka:9093',
+   'properties.group.id'               = 'flink-eventtime-consumer',
+   'scan.startup.mode'                 = 'earliest-offset',
+   'format'                            = 'json',
+   'json.fail-on-missing-field'        = 'false',
+   'json.ignore-parse-errors'          = 'true',
+   'json.timestamp-format.standard'    = 'ISO-8601'     
+  );
+
+
+
+
+-------------------------------------------------------------------------SINK 
+
+
+CREATE TABLE order_counts (
+   window_start TIMESTAMP(3),
+   window_end   TIMESTAMP(3),
+   itemname     STRING,
+   totalqty     BIGINT,
+   PRIMARY KEY (window_start, itemname) NOT ENFORCED
+ ) WITH (
+   'connector'                  = 'jdbc',
+   'url'                        = 'jdbc:postgresql://postgres:5432/mainschema',
+   'table-name'                 = 'order_counts',
+   'username'                   = 'postgres',
+   'password'                   = 'admin',
+   'driver'                     = 'org.postgresql.Driver',
+   'sink.buffer-flush.max-rows'= '500',
+   'sink.buffer-flush.interval'= '30s'
+ );
+
+
+
+
+
+--------DML 
+
+
+INSERT INTO order_counts
+ SELECT
+   CAST(TUMBLE_START(CTimeStamp, INTERVAL '5' MINUTE) AS TIMESTAMP(3)),
+   CAST(TUMBLE_END(CTimeStamp,   INTERVAL '5' MINUTE) AS TIMESTAMP(3)),
+   item.Itemname,
+   SUM(item.ItemQty)
+ FROM user_orders
+   CROSS JOIN UNNEST(orders) AS item(itemId, Itemname, ItemQty, cJSON)
+ GROUP BY
+   TUMBLE(CTimeStamp, INTERVAL '5' MINUTE),
+   item.Itemname;
+
+[INFO] Submitting SQL update statement to the cluster...
+[INFO] SQL update statement has been successfully submitted to the cluster:
+Job ID: fa00ac7dfba7dbf26cb12b486d5b03df
