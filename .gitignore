@@ -1,0 +1,17 @@
+code/flink-sql/docker/minio-data/.minio.sys/format.json
+code/flink-sql/docker/minio-data/.minio.sys/buckets/.bloomcycle.bin/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/buckets/.usage-cache.bin/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/buckets/.usage-cache.bin.bkp/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/buckets/.usage.json/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/buckets/my-bucket/.metadata.bin/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/buckets/my-bucket/.usage-cache.bin/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/buckets/my-bucket/.usage-cache.bin.bkp/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/buckets/my-bucket-2/.metadata.bin/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/buckets/my-bucket-2/.usage-cache.bin/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/buckets/my-bucket-2/.usage-cache.bin.bkp/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/config/config.json/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/config/iam/format.json/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/config/iam/sts/KQIH1X0E3C5D1EKP7RLV/identity.json/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/pool.bin/xl.meta
+code/flink-sql/docker/minio-data/.minio.sys/tmp/9fea7d2e-348e-4e14-b473-091af85ed43b
+code/flink-sql/docker/minio-data/my-bucket-2/initial.csv/xl.meta
