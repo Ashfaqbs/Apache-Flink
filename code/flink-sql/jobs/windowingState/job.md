@@ -233,49 +233,49 @@ Flink SQL> SELECT
 
 
 
-### Prometheus 
+### Grafana 
 
-Track quantity trends over time
-Time-Series Graph
+- Track quantity trends over time (Time-Series Graph)
 
+```
 SELECT window_start AS time, itemname, totalqty FROM public.order_counts ORDER BY window_start
 
 Note
 Group by 
 itemname
  for multiple lines
+```
 
-Bar Chart
 
-Compare quantities by item
-
+- Compare quantities by item (Bar Chart)
+```
 SELECT itemname, SUM(totalqty) AS total_quantity FROM public.order_counts WHERE window_start >= $__timeFrom() AND window_end <= $__timeTo() GROUP BY itemname
+```
 
-Table
 
-Display raw data
-
+- Display raw data (Table)
+```
 SELECT window_start, window_end, itemname, totalqty FROM public.order_counts ORDER BY window_end DESC LIMIT 10
-
+```
 
 
 others
 
-Top N Items by Total Quantity (Pie Chart or Donut Chart)
+- Top N Items by Total Quantity (Pie Chart or Donut Chart)
 
-
+```
 SELECT itemname, SUM(totalqty) AS total_quantity
 FROM public.order_counts
 WHERE window_start >= $__timeFrom() AND window_end <= $__timeTo()
 GROUP BY itemname
 ORDER BY total_quantity DESC
 LIMIT 5;
+```
 
 
+- Daily Order Trends (Time-Series Graph with Aggregation
 
-Daily Order Trends (Time-Series Graph with Aggregation
-
-
+```
 SELECT 
     DATE_TRUNC('day', window_start) AS time,
     SUM(totalqty) AS total_quantity
@@ -283,10 +283,11 @@ FROM public.order_counts
 WHERE window_start >= $__timeFrom() AND window_end <= $__timeTo()
 GROUP BY DATE_TRUNC('day', window_start)
 ORDER BY time;
+```
 
+- Item Comparison Over Specific Time Windows (Stacked Bar Chart)
 
-Item Comparison Over Specific Time Windows (Stacked Bar Chart)
-
+```
 SELECT 
     itemname,
     DATE_TRUNC('hour', window_start) AS time_bucket,
@@ -295,14 +296,15 @@ FROM public.order_counts
 WHERE window_start >= $__timeFrom() AND window_end <= $__timeTo()
 GROUP BY itemname, DATE_TRUNC('hour', window_start)
 ORDER BY time_bucket;
+```
 
 
-
-Latest Orders Snapshot (Table with Filters)
-
+- Latest Orders Snapshot (Table with Filters)
+```
 SELECT window_start, window_end, itemname, totalqty
 FROM public.order_counts
 WHERE window_start >= $__timeFrom() AND window_end <= $__timeTo()
 ORDER BY window_end DESC
 LIMIT 20;
+```
 
