@@ -46,6 +46,8 @@ services:
     command: jobmanager
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - AWS_ACCESS_KEY_ID=admin
+      - AWS_SECRET_ACCESS_KEY=admin123
     volumes:
       - ./jars:/opt/flink/custom-lib
 
@@ -57,6 +59,8 @@ services:
     command: taskmanager
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - AWS_ACCESS_KEY_ID=admin
+      - AWS_SECRET_ACCESS_KEY=admin123
     volumes:
       - ./jars:/opt/flink/custom-lib
     deploy:
@@ -78,4 +82,19 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=adminpassword
     depends_on:
       - postgres
+      
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"    # S3 API
+      - "9001:9001"    # MinIO Console (web UI)
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin123
+    volumes:
+      - ./minio-data:/data  # a bucket is created automatically but file not be added we need to add via code or manually CSV here
+    user: "1000:197609" # UID:GID, using 1000 for UID (common default) and 197609 for GID ( id -g) nw
+    command: server /data --console-address ":9001"
+
   
