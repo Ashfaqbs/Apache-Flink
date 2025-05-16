@@ -49,7 +49,7 @@ env:
 
 
 
-JARS in plugin 
+JARS in plugin  from https://archive.apache.org/dist/flink/flink-1.19.2/
 
 PS C:\Users\ashfa\Downloads\flink-1.19.2-bin-scala_2.12\flink-1.19.2\opt>  docker exec -it docker-taskmanager-1 mkdir -p /opt/flink/plugins/s3-fs-hadoop
 PS C:\Users\ashfa\Downloads\flink-1.19.2-bin-scala_2.12\flink-1.19.2\opt>  docker exec -it docker-taskmanager-2 mkdir -p /opt/flink/plugins/s3-fs-hadoop
