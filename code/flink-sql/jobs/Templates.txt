@@ -1,0 +1,46 @@
+
+- GCS 
+
+
+````
+Source 
+
+
+CREATE TABLE kafka_source (
+    id STRING,
+    name STRING,
+    category STRING,
+    ts TIMESTAMP(3),
+    WATERMARK FOR ts AS ts - INTERVAL '5' SECOND
+) WITH (
+    'connector' = 'kafka',
+    'topic' = 'topic-name',
+    'properties.bootstrap.servers' = 'kafka-broker:9092',
+    'format' = 'json',
+    'scan.startup.mode' = 'earliest-offset'
+);
+
+
+
+CREATE TABLE gcs_sink (
+    id STRING,
+    name STRING,
+    category STRING,
+    ts TIMESTAMP(3)
+) PARTITIONED BY (category)
+WITH (
+    'connector' = 'filesystem',
+    'path' = 'gs://bucket-name/output/',
+    'format' = 'orc'
+);
+
+
+PARTITIONED BY (category) will write to paths like ->
+
+gs://bucket-name/output/category=foo/
+gs://bucket-name/output/category=bar/
+
+
+
+
+````
