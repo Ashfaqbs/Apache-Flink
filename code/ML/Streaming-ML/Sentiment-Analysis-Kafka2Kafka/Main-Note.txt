@@ -1,0 +1,117 @@
+- sentiment analysis Flow:
+
+load data from Excel -> Encodes labels using LabelEncoder -> Created a Pipeline with TfidfVectorizer + LogisticRegression ->
+Trains and dumps the model and label encoder
+
+expose an api 
+
+
+
+
+- pros
+
+- decoupled, more maintainable, and target scaling (pods -> HPA), creative ml lib compared to flink ml.
+
+- cons
+Latency 
+
+maybe smaller payloads , resource-rich  servers and proximity of the servers (flink - ml API servers ) should be more so travelling distance is less so less network  IO
+
+
+
+- Kafka 
+
+
+(venv) C:\tmp\flink-ml\ML Sentiment Analysis\ML Sentiment Analysis\docker>docker exec -it docker-kafka-1 bash
+root@0bb75e6ec9b8:/#  kafka-topics.sh --create \
+  --topic output-topic \
+  --bootstrap-server localhost:9092 \
+  --partitions 1 \
+  --replication-factor 1
+Created topic output-topic.
+root@0bb75e6ec9b8:/#   kafka-topics.sh --list \
+  --bootstrap-server localhost:9092
+input-topic
+output-topic
+root@0bb75e6ec9b8:/# 
+
+
+
+
+- Jar Submit 
+
+named as ktk.jar post mvn clean  install
+
+PS C:\tmp\flink-ml\ML Sentiment Analysis\ML Sentiment Analysis\streaming-flink\ml-flink> docker cp .\ktk.jar docker-jobmanager-1:/tmp/
+Successfully copied 82.5MB to docker-jobmanager-1:/tmp/
+
+
+
+PS C:\tmp\flink-ml\ML Sentiment Analysis\ML Sentiment Analysis\streaming-flink\ml-flink>  docker exec -it docker-jobmanager-1 /opt/flink/bin/flink run -c com.example.jobs.KafkaToKafkaJob  /tmp/ktk.jar
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+Job has been submitted with JobID f72e01b1e5a7e76bbd9c0d61531b080d
+
+
+
+
+
+
+
+
+- Scripts 
+
+Producer IP 
+
+(venv) C:\tmp\flink-ml\ML Sentimis\streaming-flink>python producer.pSent: TSent: Terrible experience. The item broke in 2 days.
+Sent: Average quality. Not bad, but not excellent.
+Sent: Excellent! Totally worth the price.
+Sent: Worst purchase ever. Very disappointed.
+
+(venv) C:\tmp\flink-ml\ML Sentiment Analysis\ML Sentiment Analysis\streaming-flink>
+
+
+
+Consumer OP
+
+(venv) C:\tmp\flink-ml\ML Sentiment Analysis\ML Sentiment Analysis\streaming-flink>python consumer.py
+Listening for messages on 'output-topic'...
+Received: {"review":"\"Great product! Loved the quality and build.\"","sentiment":"positive"}
+Received: {"review":"\"Terrible experience. The item broke in 2 days.\"","sentiment":"positive"}
+timent":"neutral"}
+timent":"neutral"}
+timent":"neutral"}
+Received: {"review":"\"Excellent! Totally worth the price.\"","sentiment":"positive"}
+Received: {"review":"\"Worst purchase ever. Very disappointed.\"","sentiment":"negative"}
+timent":"neutral"}
+Received: {"review":"\"Excellent! Totally worth the price.\"","sentiment":"positive"}
+timent":"neutral"}
+Received: {"review":"\"Excellent! Totally worth the price.\"","sentiment":"positive"}
+Received: {"review":"\"Worst purchase ever. Very disappointed.\"","sentiment":"negative"}     timent":"neutral"}
+Received: {"review":"\"Excellent! Totally worth the price.\"","sentiment":"positive"}
+Received: {"review":"\"Worst purchase ever. Very disappointed.\"","sentiment":"negative"}      eceived: {"review":"\"Terrible experience. The item broke in 2 days.\"","sentiment":"positive
+timent":"neutral"}
+timent":"neutral"}
+Received: {"review":"\"Excellent! Totally worth the price.\"","sentiment":"positive"}        
+Received: {"review":"\"Worst purchase ever. Very disappointed.\"","sentiment":"negative"}    
+Received: {"review":"\"Great product! Loved the quality and build.\"","sentiment":"positive"}
+Received: {"review":"\"Terrible experience. The item broke in 2 days.\"","sentiment":"positive"}
+Received: {"review":"\"Average quality. Not bad, but not excellent.\"","sentiment":"neutral"}
+Received: {"review":"\"Excellent! Totally worth the price.\"","sentiment":"positive"}        
+Received: {"review":"\"Worst purchase ever. Very disappointed.\"","sentiment":"negative"}    
+Received: {"review":"\"Great product! Loved the quality and build.\"","sentiment":"positive"}
+rible experience. The item broke in 2 days.\"","sentiment":"positive"}
+Received: {"review":"\"Average quality. Not bad, but not excellent.\"","sentiment":"neutral"}
+Received: {"review":"\"Excellent! Totally worth the price.\"","sentiment":"positive"}        
+Received: {"review":"\"Worst purchase ever. Very disappointed.\"","sentiment":"negative"}    
+
+
+
+
+
+
+
+
