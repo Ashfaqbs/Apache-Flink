@@ -16,3 +16,6 @@ code/flink-sql/docker/minio-data/.minio.sys/pool.bin/xl.meta
 code/flink-sql/docker/minio-data/.minio.sys/tmp/9fea7d2e-348e-4e14-b473-091af85ed43b
 code/flink-sql/docker/minio-data/my-bucket-2/initial.csv/xl.meta
 code/java/flink-1.19/my-flink-project/target/*
+code/java/flink-1.19/flink-jdbc-con-proj/target/*
+code/java/flink-1.2/flink-kafka-postgres-job/target/*
+code/java/flink-1.2/flink-file-job/target/*
