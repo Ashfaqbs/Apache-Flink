@@ -19,3 +19,4 @@ code/java/flink-1.19/my-flink-project/target/*
 code/java/flink-1.19/flink-jdbc-con-proj/target/*
 code/java/flink-1.2/flink-kafka-postgres-job/target/*
 code/java/flink-1.2/flink-file-job/target/*
+code/flink-sql/docker/minio-data/.minio.sys/*
