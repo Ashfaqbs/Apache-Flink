@@ -316,3 +316,48 @@ Think of it as:
 | **Operator**    | A step in your job (source, map, filter, etc.)                            |
 | **Chaining**    | Combines multiple operators into one task to save resources               |
 | **Placement**   | Flink spreads tasks across TaskManagers using available slots             |
+
+
+## 🔧 What Exactly Is a Slot?
+
+* A **slot** is a **logical unit of resource** in Flink.
+* It is **not a physical core**.
+* It **holds 1 task** (or a chain of tasks, if Flink chains them).
+* A task running inside a slot becomes a **thread**, and yes — that thread **gets scheduled by the OS on some CPU core**.
+
+---
+
+### 🔄 So what’s the relation?
+
+| Flink Term | What it means                             | Related to hardware?         |
+| ---------- | ----------------------------------------- | ---------------------------- |
+| **Task**   | A thread that runs part of your Flink job | Yes → becomes a real thread  |
+| **Slot**   | A Flink-defined "box" to hold a task      | No → logical, not a CPU core |
+| **Core**   | Physical CPU core on the machine          | Yes                          |
+
+➡️ So **a slot runs a task (thread)**
+➡️ **The thread is put on a core by the OS scheduler**, not by Flink.
+
+---
+
+### 🔧 Is the number of slots configurable?
+
+✅ **Yes, 100%**. You can control it.
+
+In `flink-conf.yaml`, or when starting the TaskManager, you can set:
+
+```yaml
+taskmanager.numberOfTaskSlots: 4
+```
+
+Or if launching via CLI or a script, you can pass the number of slots per TaskManager.
+
+---
+
+### 🧠 General Advice:
+
+* **More slots** per TaskManager = can run **more tasks per machine**, but need more CPU and RAM.
+* **Fewer slots** = safer, but uses more machines.
+* Keep a balance — Flink doesn't magically split CPU; the OS handles thread scheduling.
+
+---
