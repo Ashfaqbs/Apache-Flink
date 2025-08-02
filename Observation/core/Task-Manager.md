@@ -361,3 +361,100 @@ Or if launching via CLI or a script, you can pass the number of slots per TaskMa
 * Keep a balance — Flink doesn't magically split CPU; the OS handles thread scheduling.
 
 ---
+## ❓ **How to decide how many slots per TaskManager?**
+
+---
+
+### ✅ First, What Factors Affect This?
+
+1. **How many total tasks?**
+   → `tasks = operators × parallelism`
+
+2. **How many slots will I need to run those tasks?**
+   → Each **slot runs 1 task (or operator chain)**
+
+3. **How much CPU/RAM per task?**
+   → Helps decide **how many slots fit per machine**
+
+4. **How much you want to parallelize the job across machines?**
+
+---
+
+## 🔢 Now Let’s Use Your Example:
+
+* Operators: 4
+  → e.g., `source → filter → map → sink`
+
+* Parallelism: 2
+  → So each operator will have 2 tasks
+
+* Tasks = 4 × 2 = **8 total tasks**
+  → You need **8 slots total**
+
+---
+
+### 🎯 Strategy 1: **Simple Slot Planning Rule**
+
+> A good **starting point** is:
+> **1 slot per CPU core**, and **1 task per slot**
+
+So if your machine has 4 CPU cores:
+
+* Set TaskManager to **4 slots**
+* That means you can run 4 tasks in parallel
+
+➡️ To run 8 tasks → you need:
+
+* **2 TaskManagers**, each with 4 slots
+  OR
+* **1 TaskManager with 8 slots** (if the machine is strong enough)
+
+---
+
+## ⚖️ So What’s “Ideal”?
+
+> **Ideal = number of slots where all your tasks can run in parallel** without waiting or overloading the machine.
+
+So for your job:
+
+| Task Detail       | Value                     |
+| ----------------- | ------------------------- |
+| Operators         | 4                         |
+| Parallelism       | 2                         |
+| Total Tasks       | 8                         |
+| Min Slots Needed  | 8                         |
+| If TM has 2 slots | Need 4 TaskManagers       |
+| If TM has 4 slots | Need 2 TaskManagers       |
+| If TM has 8 slots | 1 TaskManager (high load) |
+
+---
+
+## 🔍 Bonus: When do I **chain** operators to reduce slot usage?
+
+If you chain:
+
+* `source → filter → map` together (as 1 task)
+* and leave `sink` separate
+
+Then:
+
+* You get **2 chains (× parallelism 2) = 4 tasks**
+* Need only **4 slots** (instead of 8)
+
+✅ Use `disableOperatorChaining()` if you want to avoid this chaining
+
+---
+
+## 📌 Final Summary for Your Job
+
+* 4 operators
+* Parallelism = 2
+  → 8 tasks
+
+### Ideal Configs:
+
+| Config Option   | How It Looks                                |
+| --------------- | ------------------------------------------- |
+| TM with 4 slots | 2 TMs (4 × 2 = 8 slots) ✅ balanced          |
+| TM with 2 slots | 4 TMs (2 × 4 = 8 slots) ✅ low CPU load      |
+| TM with 8 slots | 1 TM (8 × 1 = 8 slots) ⚠️ high machine load |
