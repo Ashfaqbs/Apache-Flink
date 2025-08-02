@@ -197,4 +197,162 @@ Each **task** uses:
 * **Splitting the job** = breaking big logic into small runnable parts
 * **Handling failure** = using checkpoints + restart logic
 
+## ✅ **Doubts, Answered One-by-One**
 
+---
+
+### ❓ 1. **Is Source and Sink also considered a Task?**
+
+✅ **Yes**.
+Every operator — even `source` and `sink` — becomes a **task** in Flink.
+
+So for this job:
+`source → filter → map → sum → sink`
+All 5 are **operators**, and each becomes **tasks** when you set parallelism.
+
+---
+
+### ❓ 2. **If parallelism is set to 2, does each operator get 2 tasks?**
+
+✅ **Yes.**
+With parallelism = 2, Flink **divides each operator i.e source, sink, filter, map, sum....... each into 2 tasks , operator gets divided by 2 threads i.e tasks**.
+
+So the actual task layout will be:
+
+* **2 Source Tasks**
+* **2 Filter Tasks**
+* **2 Map Tasks**
+* **2 KeyBy+Sum Tasks**
+* **2 Sink Tasks**
+
+That’s **10 total running tasks/threads**, and each one runs in its own **thread**, usually managed by a **TaskManager JVM process**.
+
+---
+
+### ❓ 3. **What runs these tasks — JVM or threads?**
+
+Flink uses:
+
+* **TaskManager**: a JVM process (like a worker node)
+* **Slots** inside TaskManager: like boxes where tasks run
+* **Each Task** runs in **its own thread**
+
+➡️ If you have 2 TaskManagers and 2 slots each, Flink may assign tasks across both JVMs.
+So yes — **tasks are threads**, but **TaskManagers are JVM processes**.
+
+---
+
+### ❓ 4. **How are tasks divided — how is data split across them?**
+
+Let’s take a simple flow with **parallelism = 2**:
+
+```text
+Kafka Source (2 tasks)
+   ↓
+Filter (2 tasks)
+   ↓
+Map (2 tasks)
+   ↓
+KeyBy+Sum (2 tasks)
+   ↓
+Sink (2 tasks)
+```
+
+➡️ **Kafka Source** splits the stream itself:
+
+* Task 1 reads partition 0
+* Task 2 reads partition 1
+
+➡️ **Filter** and **Map** just follow that split (1-to-1 by default)
+
+➡️ **KeyBy+Sum** needs to group data by `user.id`. So Flink uses **hash partitioning**:
+
+* user ID “A” goes to Sum task 1
+* user ID “B” goes to Sum task 2
+  This is automatic — Flink shuffles data based on the key.
+
+➡️ **Sink** again just receives final outputs from `sum`, divided by key.
+
+---
+
+### ❓ 5. **Will this cause duplicates? How does Flink prevent it?**
+
+Great question.
+
+* **Flink does not duplicate data during normal operation.**
+* Each record flows through **only one path**:
+  → one source task → one filter → one map → one keyed sum → one sink.
+
+But if there's a **failure** and the job **restarts**, some records might be reprocessed.
+To **prevent duplicates** in such cases, Flink uses:
+
+✅ **Checkpoints + Exactly-Once processing** mode.
+This makes sure that:
+
+* No data is missed
+* No data is processed twice
+* Sinks are only written to **once** per checkpoint
+
+---
+
+## ✅ Summary
+
+| Concept                    | Simple Answer                           |
+| -------------------------- | --------------------------------------- |
+| **Source/Sink are tasks?** | Yes                                     |
+| **Parallelism = 2**        | Every operator becomes 2 tasks          |
+| **What runs tasks?**       | Threads inside TaskManagers (JVM)       |
+| **How is data split?**     | Hash-partitioning or 1-to-1             |
+| **Duplicates?**            | Prevented by checkpoints + exactly-once |
+
+
+### 1. **Are operators things like `source`, `sink`, `filter`, `map`, `sum`?**
+
+✅ **Yes.**
+Each of those is one **operator** — one step in your Flink job.
+
+---
+
+### 2. **When I set `parallelism = 2`, does each operator become 2 tasks?**
+
+✅ **Yes.**
+Every operator becomes **2 tasks** (or `n` tasks for `parallelism = n`).
+
+➡️ Example:
+4 operators × parallelism 2 → **8 total tasks**
+
+---
+
+### 3. **Are these tasks threads?**
+
+✅ **Yes, mostly.**
+Each task runs in its own **thread**, managed by the **TaskManager (a JVM process)**.
+
+➡️ So:
+
+* One TaskManager (JVM)
+* Has multiple **slots**
+* Each slot runs **one thread** = **one task**
+
+---
+
+### 🎯 Simple Visual:
+
+| Operator | Tasks when parallelism = 2   |
+| -------- | ---------------------------- |
+| `source` | Source Task 0, Source Task 1 |
+| `filter` | Filter Task 0, Filter Task 1 |
+| `map`    | Map Task 0, Map Task 1       |
+| `sum`    | Sum Task 0, Sum Task 1       |
+| `sink`   | Sink Task 0, Sink Task 1     |
+
+✅ These are all **separate threads** doing parts of the job in **parallel**.
+
+---
+
+### 🔁 Summary
+
+* Operators = steps like source, filter, map, sum, sink
+* Tasks = parallel units (threads) that run each operator
+* Parallelism decides **how many tasks per operator**
+* Tasks are **threads inside slots**, run by **TaskManagers**
