@@ -458,3 +458,134 @@ Then:
 | TM with 4 slots | 2 TMs (4 × 2 = 8 slots) ✅ balanced          |
 | TM with 2 slots | 4 TMs (2 × 4 = 8 slots) ✅ low CPU load      |
 | TM with 8 slots | 1 TM (8 × 1 = 8 slots) ⚠️ high machine load |
+
+
+
+## **deep dive into TaskManager (TM) config**:
+
+---
+
+# 🧱 TaskManager Config – Complete Breakdown
+
+We'll cover:
+
+1. **What config options exist**
+2. **What they control**
+3. **Whether they can be set in code**
+4. **Ideal values for a machine with** `n cores`, `n GB RAM`, `n GB SSD`
+
+---
+
+## ✅ 1. `taskmanager.numberOfTaskSlots`
+
+```yaml
+taskmanager.numberOfTaskSlots: n
+```
+
+| Property                    | Description                                                             |
+| --------------------------- | ----------------------------------------------------------------------- |
+| **What it does**            | Number of **slots** per TM = how many parallel tasks can run in that TM |
+| **Can be set in job code?** | ❌ No — must be set in `flink-conf.yaml` or cluster startup args         |
+| **Ideal value for n cores** | `n` (1 slot per core)                                                   |
+| **SSD impact?**             | Not related                                                             |
+
+> Too many slots → CPU overload, thread contention
+> Too few → underuse of CPU
+
+---
+
+## ✅ 2. `taskmanager.memory.process.size`
+
+```yaml
+taskmanager.memory.process.size: nG
+```
+
+| Property                     | Description                                                             |
+| ---------------------------- | ----------------------------------------------------------------------- |
+| **What it does**             | Total memory (heap + off-heap + network + overhead) given to the TM JVM |
+| **Can be set in job code?**  | ❌ No — must be in config or startup args                                |
+| **Ideal value for n GB RAM** | `n - 1G` (leave 1 GB for OS)                                            |
+| **SSD impact?**              | Indirectly — more memory = less frequent disk IO for state              |
+
+> Don’t set this and `taskmanager.memory.flink.size` together — only one
+
+---
+
+## ✅ 3. `taskmanager.memory.managed.size`
+
+```yaml
+taskmanager.memory.managed.size: auto  # or fixed like 512m
+```
+
+| Property                    | Description                                                                         |
+| --------------------------- | ----------------------------------------------------------------------------------- |
+| **What it does**            | Controls memory for state backend, RocksDB, and buffers                             |
+| **Can be set in job code?** | ❌ No — config only                                                                  |
+| **Ideal value**             | `auto` works for most; set manually (e.g., 1G) for state-heavy jobs                 |
+| **SSD impact?**             | Yes — RocksDB state spills to SSD if RAM is low; better to give more managed memory |
+
+---
+
+## ✅ 4. `taskmanager.cpu.cores`
+
+```yaml
+taskmanager.cpu.cores: n
+```
+
+| Property                    | Description                                                                              |
+| --------------------------- | ---------------------------------------------------------------------------------------- |
+| **What it does**            | Logical count of CPU cores available for this TM (used by YARN/K8s to request resources) |
+| **Can be set in job code?** | ❌ No — config only                                                                       |
+| **Ideal value**             | Match real CPU count                                                                     |
+| **SSD impact?**             | None                                                                                     |
+
+> Used only in resource-managed environments (YARN, K8s)
+
+---
+
+## ✅ 5. `taskmanager.memory.network.fraction`, `min`, `max`
+
+```yaml
+taskmanager.memory.network.fraction: 0.1
+taskmanager.memory.network.min: 64mb
+taskmanager.memory.network.max: 1gb
+```
+
+| Property                    | Description                                                    |
+| --------------------------- | -------------------------------------------------------------- |
+| **What it does**            | Controls memory used for Flink's internal shuffles and buffers |
+| **Can be set in job code?** | ❌ No                                                           |
+| **Ideal value**             | `fraction = 0.1`, `min = 64mb`, `max = 1gb` — rarely changed   |
+| **SSD impact?**             | None                                                           |
+
+> Only tweak if you see **“insufficient network buffers”** error in logs
+
+---
+
+## ✅ 6. `taskmanager.tmp.dirs`
+
+```yaml
+taskmanager.tmp.dirs: /mnt/flink/tmp1,/mnt/flink/tmp2
+```
+
+| Property                    | Description                                                   |
+| --------------------------- | ------------------------------------------------------------- |
+| **What it does**            | Controls where Flink writes temp files (spill state, buffers) |
+| **Can be set in job code?** | ❌ No                                                          |
+| **Ideal value for n SSDs**  | 1 directory per SSD. E.g., `n = 2 SSDs → 2 dirs`              |
+| **SSD impact?**             | Yes — more SSDs → higher IO throughput and less bottlenecking |
+
+> Important for **RocksDB state backend** or **large shuffles**
+
+---
+
+## ✅ Summary: Ideal Config for a Machine with n Cores, n RAM, n SSD
+
+| Config Key                            | Example for n = 8     | Notes                       |
+| ------------------------------------- | --------------------- | --------------------------- |
+| `taskmanager.numberOfTaskSlots`       | `8`                   | 1 per core                  |
+| `taskmanager.cpu.cores`               | `8`                   | matches physical cores      |
+| `taskmanager.memory.process.size`     | `7G`                  | 1G left for OS              |
+| `taskmanager.memory.managed.size`     | `auto` or `1G`        | tune if using RocksDB       |
+| `taskmanager.tmp.dirs`                | `/mnt/ssd1,/mnt/ssd2` | one path per SSD            |
+| `taskmanager.memory.network.fraction` | `0.1`                 | leave default unless errors |
