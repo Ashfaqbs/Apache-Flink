@@ -356,3 +356,127 @@ Each task runs in its own **thread**, managed by the **TaskManager (a JVM proces
 * Tasks = parallel units (threads) that run each operator
 * Parallelism decides **how many tasks per operator**
 * Tasks are **threads inside slots**, run by **TaskManagers**
+
+
+# 🧠 JobManager Config – Complete Breakdown
+
+We’ll cover:
+
+1. **All key JM config options**
+2. **What each one does**
+3. **Whether it can be set in job code**
+4. **Ideal values for a machine with** `n cores`, `n GB RAM`
+5. **Whether SSDs matter (they mostly don’t for JM)**
+
+---
+
+## ✅ 1. `jobmanager.rpc.address`
+
+```yaml
+jobmanager.rpc.address: localhost
+```
+
+| Property                    | Description                                                                  |
+| --------------------------- | ---------------------------------------------------------------------------- |
+| **What it does**            | The host/IP address where TaskManagers and clients connect to the JobManager |
+| **Can be set in job code?** | ❌ No — must be set in config or startup                                      |
+| **Ideal value**             | Set to the **real hostname or IP**, e.g., `flink-master-01`                  |
+| **SSD impact?**             | ❌ None                                                                       |
+
+> Required in standalone clusters. For YARN/K8s, it’s usually auto-managed.
+
+---
+
+## ✅ 2. `jobmanager.rpc.port`
+
+```yaml
+jobmanager.rpc.port: 6123
+```
+
+| Property                    | Description                        |
+| --------------------------- | ---------------------------------- |
+| **What it does**            | Port that TMs use to connect to JM |
+| **Can be set in job code?** | ❌ No                               |
+| **Ideal value**             | `6123` or another open port        |
+| **SSD impact?**             | ❌ None                             |
+
+> Change only if port is blocked or in use
+
+---
+
+## ✅ 3. `jobmanager.bind-host`
+
+```yaml
+jobmanager.bind-host: 0.0.0.0
+```
+
+| Property                    | Description                                         |
+| --------------------------- | --------------------------------------------------- |
+| **What it does**            | Interface JM binds to internally                    |
+| **Can be set in job code?** | ❌ No                                                |
+| **Ideal value**             | `0.0.0.0` for Docker/K8s; `localhost` for local dev |
+| **SSD impact?**             | ❌ None                                              |
+
+---
+
+## ✅ 4. `jobmanager.memory.process.size`
+
+```yaml
+jobmanager.memory.process.size: 1600m
+```
+
+| Property                     | Description                                                                    |
+| ---------------------------- | ------------------------------------------------------------------------------ |
+| **What it does**             | Total memory reserved for the JobManager process (heap + metaspace + overhead) |
+| **Can be set in job code?**  | ❌ No                                                                           |
+| **Ideal value for n GB RAM** | 1–2 GB is **usually enough**, even for n-core clusters                         |
+| **SSD impact?**              | ❌ None                                                                         |
+
+> This is not related to the job size directly — the JM handles **coordination**, not actual data
+
+---
+
+## ✅ 5. `jobmanager.execution.failover-strategy`
+
+```yaml
+jobmanager.execution.failover-strategy: region
+```
+
+| Property                    | Description                                                                    |
+| --------------------------- | ------------------------------------------------------------------------------ |
+| **What it does**            | How Flink recovers from task failures                                          |
+| **Can be set in job code?** | ✅ Yes (via `ExecutionConfig.setFailoverStrategy(...)`) but config is preferred |
+| **Ideal value**             | `region` (default, faster recovery)                                            |
+| **SSD impact?**             | ❌ None                                                                         |
+
+> Use `region` unless debugging full pipeline issues (then switch to `full`)
+
+---
+
+## ✅ Bonus (Not always in config file but relevant):
+
+### `jobmanager.heap.size` (legacy alternative to `process.size`)
+
+* No longer recommended in new versions — replaced by `memory.process.size`
+
+---
+
+## ✅ Summary: Ideal JobManager Config for Any Cluster
+
+| Config Key                               | Example Value     | Notes                                         |
+| ---------------------------------------- | ----------------- | --------------------------------------------- |
+| `jobmanager.rpc.address`                 | `flink-master-01` | Use actual hostname/IP                        |
+| `jobmanager.rpc.port`                    | `6123`            | Default is fine                               |
+| `jobmanager.bind-host`                   | `0.0.0.0`         | For containers / cluster; `localhost` for dev |
+| `jobmanager.memory.process.size`         | `1600m`–`2g`      | Good enough unless thousands of jobs          |
+| `jobmanager.execution.failover-strategy` | `region`          | Default; faster restarts                      |
+
+---
+
+## 💡 Hardware Advice
+
+| Resource | Recommendation                                       |
+| -------- | ---------------------------------------------------- |
+| CPU      | 1–2 cores is enough (JM is not heavy on CPU)         |
+| RAM      | 1–2 GB is sufficient for most setups                 |
+| SSD      | Not needed — JM doesn't handle state or shuffle data |
