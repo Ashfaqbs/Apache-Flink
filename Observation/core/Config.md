@@ -33,3 +33,66 @@ For commented examples (checkpointing, HA, HistoryServer, …) only a short line
 | JM RAM              | keep ≈ 2 GB                            |                                  |
 
 These values give every task a dedicated slot and core while fitting the machine’s memory envelope. Adjust upward when operators keep very large state (use RocksDB backend + larger managed memory).
+
+
+## Extras:
+
+## Additional Configs from `flink-conf.yaml`
+
+---
+
+### 1. ### `classloader.resolve.order`
+
+```yaml
+classloader:
+  resolve:
+    order: child-first  # or parent-first
+```
+
+| Property                    | Details                                                                                                         |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Required?**               | ❌ No — optional                                                                                                 |
+| **What it controls**        | Sets whether Flink or your app’s libraries take priority during class loading (when both define the same class) |
+| **Ideal value**             | `child-first` (Flink default) — lets user code override built-in libraries                                      |
+| **What happens if changed** | `parent-first` follows standard Java behavior — helps debug class conflicts or enforce system libs              |
+| **When to use**             | Only if you hit classpath clashes (e.g., your app uses different Jackson or Guava versions than Flink)          |
+
+---
+
+### 2. ### `security.kerberos.*`
+
+```yaml
+security:
+  kerberos:
+    login:
+      use-ticket-cache: true
+      keytab: /path/to/kerberos/keytab
+      principal: flink-user
+      contexts: Client,KafkaClient
+```
+
+| Property                  | Details                                                                                             |
+| ------------------------- | --------------------------------------------------------------------------------------------------- |
+| **Required?**             | ❌ No — only for secure Hadoop or ZooKeeper environments                                             |
+| **What it controls**      | Enables Kerberos-based authentication — lets Flink use HDFS, Kafka, or ZK with security turned on   |
+| **Ideal value**           | Leave unset unless required — set `keytab` + `principal` when you do need it                        |
+| **What happens if unset** | Flink runs normally with no security — will **fail** if trying to access Kerberized Hadoop or Kafka |
+| **When to use**           | Clusters with Kerberos-secured Hadoop, Kafka, or ZooKeeper                                          |
+
+---
+
+### 3. ### `zookeeper.sasl.*`
+
+```yaml
+zookeeper:
+  sasl:
+    login-context-name: Client
+```
+
+| Property                  | Details                                                                                |
+| ------------------------- | -------------------------------------------------------------------------------------- |
+| **Required?**             | ❌ No — only needed for ZooKeeper security                                              |
+| **What it controls**      | Sets the **JAAS login context name** used when authenticating with a secured ZooKeeper |
+| **Ideal value**           | `Client` (default); matches the `security.kerberos.login.contexts` value               |
+| **What happens if unset** | Flink assumes unsecured ZK (no SASL). If ZK is secured, connection will **fail**       |
+| **When to use**           | HA setup with **Kerberized ZooKeeper** (used with HA mode `zookeeper`)                 |
