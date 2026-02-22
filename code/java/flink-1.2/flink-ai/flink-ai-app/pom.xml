@@ -1,0 +1,158 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.example</groupId>
+  <artifactId>flink-ai-app</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <java.version>17</java.version>
+    <flink.version>1.20.3</flink.version>
+    <maven.compiler.release>${java.version}</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+<!--FLINK CORE-->
+    <!-- Flink Streaming -->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-streaming-java</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
+
+    <!-- Flink Kafka Connector -->
+    <!-- Source: https://mvnrepository.com/artifact/org.apache.flink/flink-connector-kafka -->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-kafka</artifactId>
+      <version>3.3.0-1.20</version>
+<!--      <scope>compile</scope>-->
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-agents-runtime</artifactId>
+      <version>0.2.0</version>
+    </dependency>
+
+
+    <!--FLINK CORE-->
+
+<!--    JACKSON -->
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.17.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.17.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.17.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <version>2.17.1</version>
+    </dependency>
+    <!--    JACKSON -->
+
+
+<!--FLINK AI -->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-agents-api</artifactId>
+      <version>0.2.0</version>
+    </dependency>
+
+<!--     OLLAMA LATEST LIB -->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-agents-integrations-chat-models-ollama</artifactId>
+      <version>0.2.0</version>
+    </dependency>
+
+    <!--   OPENAI GROQ LATEST LIB -->
+
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-agents-integrations-chat-models-openai</artifactId>
+      <version>0.2.0</version>
+    </dependency>
+    <!--FLINK AI -->
+
+
+<!--    Not required for now -->
+    <!-- Source: https://mvnrepository.com/artifact/org.apache.flink/flink-connector-jdbc -->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.flink</groupId>-->
+<!--      <artifactId>flink-connector-jdbc</artifactId>-->
+<!--      <version>3.3.0-1.20</version>-->
+<!--&lt;!&ndash;      <scope>test</scope>&ndash;&gt;-->
+<!--    </dependency>-->
+
+<!--    &lt;!&ndash; PostgreSQL Driver &ndash;&gt;-->
+<!--    <dependency>-->
+<!--      <groupId>org.postgresql</groupId>-->
+<!--      <artifactId>postgresql</artifactId>-->
+<!--      <version>42.7.3</version>-->
+<!--    </dependency>-->
+
+  </dependencies>
+
+  <build>
+    <plugins>
+
+      <!-- Compiler Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <release>${java.version}</release>
+        </configuration>
+      </plugin>
+
+      <!-- Shade Plugin for Fat Jar -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>

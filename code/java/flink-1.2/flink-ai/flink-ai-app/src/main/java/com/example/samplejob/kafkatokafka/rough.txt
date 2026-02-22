@@ -1,0 +1,5 @@
+ mvn clean package -DskipTests
+docker cp target\flink-ai-app-1.0-SNAPSHOT.jar docker-jobmanager-1:/tmp/flink-ai-app.jar
+docker exec -it docker-jobmanager-1 /opt/flink/bin/flink run -c com.example.samplejob.kafkatokafka.KafkaToKafkaFilterJob /tmp/flink-ai-app.jar
+
+

@@ -21,3 +21,6 @@ code/java/flink-1.2/flink-kafka-postgres-job/target/*
 code/java/flink-1.2/flink-file-job/target/*
 code/flink-sql/docker/minio-data/.minio.sys/*
 code/java/flink-2.0/my-flink-project/target/*
+code/java/flink-1.2/flink-ai/.idea
+code/java/flink-1.2/flink-ai/flink-ai-app/target/
+code/java/flink-1.2/flink-ai/python/venv

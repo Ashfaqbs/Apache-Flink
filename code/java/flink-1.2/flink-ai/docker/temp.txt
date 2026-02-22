@@ -1,0 +1,21 @@
+check topic:
+
+❯❯ docker  11:34 docker exec -it docker-kafka-1 /opt/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+__consumer_offsets
+input-topic
+output-topic
+
+What's next:
+    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug docker-kafka-1
+    Learn more at https://docs.docker.com/go/debug-cli/
+❯❯ docker  11:35
+
+
+
+
+Create topic:
+
+docker exec -it docker-kafka-1 /opt/kafka/bin/kafka-topics.sh --create --topic input-topic --partitions 1 --replication-factor 1 --bootstrap-server localhost:9092
+
+
+docker exec -it docker-kafka-1 /opt/kafka/bin/kafka-topics.sh --create --topic output-topic --partitions 1 --replication-factor 1 --bootstrap-server localhost:9092
