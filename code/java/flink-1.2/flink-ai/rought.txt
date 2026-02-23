@@ -1,0 +1,1 @@
+C:\tmp\flink-ai>mvn archetype:generate -DgroupId=com.example -DartifactId=flink-ai-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
