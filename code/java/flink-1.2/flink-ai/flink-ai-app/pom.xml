@@ -93,6 +93,63 @@
     <!--FLINK AI -->
 
 
+     <!--
+      ─── FILE CONNECTOR ──────────────────────────────────────────────────────
+      Gives Flink the ability to read/write files (local, HDFS, S3) as first-
+      class streaming sources and sinks — via FileSource / FileSink.
+      Analogy: like adding a "file system driver" to Flink. Without it,
+      FileSource doesn't exist and Flink can't open any file at all.
+      When to use: any job that reads from log files, JSON dumps, CSVs, or
+      writes results to S3/HDFS in addition to (or instead of) Kafka.
+      In our workflow job: used to read input_data.txt as the review stream.
+    -->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-files</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
+
+    <!--
+      ─── TABLE ↔ DATASTREAM BRIDGE ───────────────────────────────────────────
+      Flink has two APIs: the low-level DataStream API (imperative, event-by-
+      event) and the high-level Table API (declarative, SQL-like). This dep is
+      the bridge between them — it provides StreamTableEnvironment, which lets
+      you convert a Table into a DataStream and vice versa.
+      Analogy: like a USB-C adapter between two incompatible ports. Flink
+      DataStream and Table API can't talk to each other without this.
+      When to use: any job that mixes Flink SQL / Table API sources with
+      DataStream operators — e.g., read structured JSON via filesystem connector
+      with a typed schema, then feed it into a DataStream agent pipeline.
+      In our workflow job: used to read reviews from a file as a structured
+      Table (with typed id/review columns) and convert it to a DataStream.
+    -->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-table-api-java-bridge</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
+
+    <!--
+      ─── TABLE PLANNER (QUERY ENGINE) ────────────────────────────────────────
+      The actual SQL optimizer and execution engine (built on Apache Calcite).
+      When you write Table API or Flink SQL, something has to translate that
+      into real Flink operators at runtime — that is this library's job.
+      Analogy: the bridge above is the road, but this is the engine in the car.
+      Without it, Table API code compiles fine but crashes at runtime with
+      NoClassDefFoundError — it and flink-table-api-java-bridge are a mandatory
+      pair; one without the other does nothing useful.
+      When to use: always include this alongside flink-table-api-java-bridge.
+      In our workflow job: powers the SQL planner that executes the filesystem
+      connector query and hands rows off to the DataStream agent pipeline.
+    -->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-table-planner-loader</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
+
+
+
 <!--    Not required for now -->
     <!-- Source: https://mvnrepository.com/artifact/org.apache.flink/flink-connector-jdbc -->
 <!--    <dependency>-->
