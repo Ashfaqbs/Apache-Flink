@@ -22,23 +22,23 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  postgres:
-    image: postgres:latest
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_DB: mainschema
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  # postgres:
+  #   image: postgres:latest
+  #   restart: always
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_DB: mainschema
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: admin
+  #   volumes:
+  #     - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   jobmanager:
-    image: flink:1.19.0-scala_2.12
+    image: apache/flink:1.19.2-java17
     depends_on:
       - kafka
-      - postgres
+      # - postgres
     ports:
       - "8081:8081"
     command: jobmanager
@@ -46,7 +46,7 @@ services:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
 
   taskmanager:
-    image: flink:1.19.0-scala_2.12
+    image: apache/flink:1.19.2-java17
     depends_on:
       - jobmanager
     command: taskmanager
